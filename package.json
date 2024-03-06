@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "compile": "tsc -w",
+    "build": "tsc",
     "dev": "nodemon dist/index.js"
   },
   "author": "Muhammad Sulayman Haydar",

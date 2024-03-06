@@ -8,6 +8,6 @@ RUN npm ci
 
 COPY . .
 
-RUN npm run compile
+RUN npm run build
 EXPOSE 4020
 CMD ["npm", "run", "dev"]
