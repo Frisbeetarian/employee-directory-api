@@ -1,14 +1,7 @@
-import {
-    Column,
-    CreateDateColumn,
-    Entity,
-    OneToMany,
-    PrimaryGeneratedColumn,
-    UpdateDateColumn
-} from "typeorm";
-import {EmployeeDepartment} from "./EmployeeDepartment";
-import {EmployeeSkill} from "./EmployeeSkill";
-import {EmployeeProject} from "./EmployeeProject";
+import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { EmployeeDepartment } from './EmployeeDepartment';
+import { EmployeeSkill } from './EmployeeSkill';
+import { EmployeeProject } from './EmployeeProject';
 
 @Entity()
 export class Employee {
@@ -20,6 +13,7 @@ export class Employee {
 
     @Column()
     lastName!: string;
+
 
     @Column()
     name!: string;
@@ -36,7 +30,7 @@ export class Employee {
     @Column()
     jobTitle?: string;
 
-    @Column({nullable: true})
+    @Column({ nullable: true })
     picture?: string;
 
     @Column({ nullable: true })

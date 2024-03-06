@@ -1,16 +1,16 @@
 import dotenv from 'dotenv';
-dotenv.config();
-
 import express from 'express';
 import { DataSource } from 'typeorm';
 import { Employee } from './entities/Employee';
 import helmet from 'helmet';
-import {Department} from "./entities/Department";
-import {EmployeeDepartment} from "./entities/EmployeeDepartment";
-import {Skill} from "./entities/Skill";
-import {EmployeeSkill} from "./entities/EmployeeSkill";
-import {Project} from "./entities/Project";
-import {EmployeeProject} from "./entities/EmployeeProject";
+import { Department } from './entities/Department';
+import { EmployeeDepartment } from './entities/EmployeeDepartment';
+import { Skill } from './entities/Skill';
+import { EmployeeSkill } from './entities/EmployeeSkill';
+import { Project } from './entities/Project';
+import { EmployeeProject } from './entities/EmployeeProject';
+
+dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 4020;
@@ -20,8 +20,8 @@ app.use(helmet());
 
 // Database connection
 const AppDataSource = new DataSource({
-    type: "postgres",
-    host: "localhost",
+    type: 'postgres',
+    host: 'localhost',
     port: Number(process.env.POSTGRESQL_PORT),
     username: process.env.POSTGRESQL_USERNAME,
     password: process.env.POSTGRESQL_PASSWORD,
@@ -33,10 +33,10 @@ const AppDataSource = new DataSource({
 
 AppDataSource.initialize()
     .then(() => {
-        console.log("Data Source has been initialized!")
+        console.log('Data Source has been initialized!')
     })
     .catch((err) => {
-        console.error("Error during Data Source initialization", err)
+        console.error('Error during Data Source initialization', err)
     })
 
 app.use((err: Error, _: express.Request, res: express.Response, __: express.NextFunction) => {

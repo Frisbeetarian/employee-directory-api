@@ -1,13 +1,6 @@
-import {
-    Column,
-    CreateDateColumn,
-    Entity,
-    ManyToOne,
-    PrimaryGeneratedColumn,
-    UpdateDateColumn
-} from "typeorm";
-import {Employee} from "./Employee";
-import {Project} from "./Project";
+import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { Employee } from './Employee';
+import { Project } from './Project';
 
 @Entity()
 export class EmployeeProject {
