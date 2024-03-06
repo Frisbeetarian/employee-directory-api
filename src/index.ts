@@ -1,3 +1,6 @@
+import dotenv from 'dotenv';
+dotenv.config();
+
 import express from 'express';
 import { createConnection } from 'typeorm';
 import { Employee } from './entities/Employee';
@@ -9,14 +12,15 @@ const port = process.env.PORT || 4020;
 // Middleware
 app.use(helmet());
 
+console.log("process.env.DB_USERNAME", process.env.POSTGRESQL_USERNAME)
 // Database connection
 createConnection({
     type: 'postgres',
     host: process.env.DB_HOST,
     port: Number(process.env.DB_PORT),
-    username: process.env.DB_USERNAME,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME,
+    username: process.env.POSTGRESQL_USERNAME,
+    password: process.env.POSTGRESQL_PASSWORD,
+    database: process.env.POSTGRESQL_DATABASE,
     entities: [Employee],
     synchronize: true,
     logging: false,
