@@ -1,6 +1,15 @@
-import {Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn} from "typeorm";
+import {
+    Column,
+    CreateDateColumn,
+    Entity,
+    ManyToOne,
+    OneToMany,
+    PrimaryGeneratedColumn,
+    UpdateDateColumn
+} from "typeorm";
 
 import {Employee} from "./Employee";
+import {EmployeeDepartment} from "./EmployeeDepartment";
 
 @Entity()
 export class Department {
@@ -16,6 +25,12 @@ export class Department {
     @ManyToOne(() => Employee)
     manager!: Employee;
 
-    @OneToMany(() => Employee, employee => employee.department)
-    employees?: Employee[];
+    @OneToMany(() => EmployeeDepartment, employeeDepartment => employeeDepartment.department)
+    employeeDepartments: EmployeeDepartment[];
+
+    @UpdateDateColumn()
+    updatedAt: Date
+
+    @CreateDateColumn()
+    createdAt: Date
 }
