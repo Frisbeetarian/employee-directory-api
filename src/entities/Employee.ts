@@ -14,20 +14,19 @@ export class Employee {
     @Column()
     lastName!: string;
 
-
     @Column()
     name!: string;
 
     @Column()
     email!: string;
 
-    @Column()
+    @Column({ nullable: true })
     phoneNumber?: string;
 
-    @Column()
+    @Column({ nullable: true })
     hireDate?: Date;
 
-    @Column()
+    @Column({ nullable: true })
     jobTitle?: string;
 
     @Column({ nullable: true })
