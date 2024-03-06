@@ -1,32 +1,31 @@
 version: '3'
 
 services:
-  app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    ports:
-      - "4020:4020"
-    depends_on:
-      - db
-    environment:
-      - DB_HOST=db
-      - DB_PORT=5432
-      - DB_USERNAME=admin
-      - DB_PASSWORD=password
-      - DB_NAME=employee-directory
-    volumes:
-      - ./:/app
-      - /app/node_modules
-    command: npm run dev
-
+#  app:
+#    build:
+#      context: .
+#      dockerfile: Dockerfile
+#    ports:
+#      - "4020:4020"
+#    depends_on:
+#      - db
+#    environment:
+#      - DB_HOST=db
+#      - DB_PORT=5432
+#      - DB_USERNAME=admin
+#      - DB_PASSWORD=${POSTGRESQL_PASSWORD}
+#      - DB_NAME=employee-directory
+#    volumes:
+#      - ./:/app
+#      - /app/node_modules
+#    command: npm run dev
   db:
     image: postgres:latest
     restart: always
     environment:
-      - POSTGRES_USER=admin
-      - POSTGRES_PASSWORD=password
-      - POSTGRES_DB=employee-directory
+      - POSTGRES_USER=${POSTGRESQL_ADMIN}
+      - POSTGRES_PASSWORD=${POSTGRESQL_PASSWORD}
+      - POSTGRES_DB=${POSTGRESQL_DATABASE}
     ports:
       - "5432:5432"
     volumes:
