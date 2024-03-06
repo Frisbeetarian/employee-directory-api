@@ -1,15 +1,12 @@
 import {
     Column,
     CreateDateColumn,
-    Entity, JoinTable, ManyToMany,
-    ManyToOne,
+    Entity,
     OneToMany,
     PrimaryGeneratedColumn,
     UpdateDateColumn
 } from "typeorm";
-import {Department} from "./Department";
 import {EmployeeDepartment} from "./EmployeeDepartment";
-import {Skill} from "./Skill";
 import {EmployeeSkill} from "./EmployeeSkill";
 import {EmployeeProject} from "./EmployeeProject";
 

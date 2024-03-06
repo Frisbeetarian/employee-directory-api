@@ -2,12 +2,10 @@ import {
     Column,
     CreateDateColumn,
     Entity,
-    ManyToMany,
     OneToMany,
     PrimaryGeneratedColumn,
     UpdateDateColumn
 } from "typeorm";
-import {Employee} from "./Employee";
 import {EmployeeSkill} from "./EmployeeSkill";
 
 @Entity()
