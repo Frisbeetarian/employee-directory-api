@@ -16,7 +16,7 @@ console.log("process.env.DB_USERNAME", process.env.POSTGRESQL_USERNAME)
 
 // Database connection
 const AppDataSource = new DataSource({
-    type: 'postgres',
+    type: "postgres",
     host: "localhost",
     port: Number(process.env.POSTGRESQL_PORT),
     username: process.env.POSTGRESQL_USERNAME,
@@ -24,7 +24,7 @@ const AppDataSource = new DataSource({
     database: process.env.POSTGRESQL_DATABASE,
     entities: [Employee],
     synchronize: true,
-    logging: false,
+    logging: true,
 })
 
 AppDataSource.initialize()
