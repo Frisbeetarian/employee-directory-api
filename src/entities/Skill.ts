@@ -1,5 +1,14 @@
-import {Column, Entity, ManyToMany, PrimaryGeneratedColumn} from "typeorm";
+import {
+    Column,
+    CreateDateColumn,
+    Entity,
+    ManyToMany,
+    OneToMany,
+    PrimaryGeneratedColumn,
+    UpdateDateColumn
+} from "typeorm";
 import {Employee} from "./Employee";
+import {EmployeeSkill} from "./EmployeeSkill";
 
 @Entity()
 export class Skill {
@@ -8,4 +17,13 @@ export class Skill {
 
     @Column()
     name!: string;
+
+    @OneToMany(() => EmployeeSkill, employeeSkill => employeeSkill.skill)
+    employeeSkills: EmployeeSkill[];
+
+    @UpdateDateColumn()
+    updatedAt: Date
+
+    @CreateDateColumn()
+    createdAt: Date
 }

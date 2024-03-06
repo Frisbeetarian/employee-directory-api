@@ -8,6 +8,7 @@ import helmet from 'helmet';
 import {Department} from "./entities/Department";
 import {EmployeeDepartment} from "./entities/EmployeeDepartment";
 import {Skill} from "./entities/Skill";
+import {EmployeeSkill} from "./entities/EmployeeSkill";
 
 const app = express();
 const port = process.env.PORT || 4020;
@@ -23,7 +24,7 @@ const AppDataSource = new DataSource({
     username: process.env.POSTGRESQL_USERNAME,
     password: process.env.POSTGRESQL_PASSWORD,
     database: process.env.POSTGRESQL_DATABASE,
-    entities: [Employee, Department, EmployeeDepartment, Skill],
+    entities: [Employee, Department, EmployeeDepartment, Skill, EmployeeSkill],
     synchronize: true,
     logging: true,
 })

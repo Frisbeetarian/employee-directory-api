@@ -10,6 +10,7 @@ import {
 import {Department} from "./Department";
 import {EmployeeDepartment} from "./EmployeeDepartment";
 import {Skill} from "./Skill";
+import {EmployeeSkill} from "./EmployeeSkill";
 
 @Entity()
 export class Employee {
@@ -45,6 +46,9 @@ export class Employee {
 
     @OneToMany(() => EmployeeDepartment, employeeDepartment => employeeDepartment.employee)
     employeeDepartments: EmployeeDepartment[];
+
+    @OneToMany(() => EmployeeSkill, employeeSkill => employeeSkill.employee)
+    employeeSkills: EmployeeSkill[];
 
     @UpdateDateColumn()
     updatedAt: Date

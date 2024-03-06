@@ -2,7 +2,7 @@ import {CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateC
 import {Employee} from "./Employee";
 import {Department} from "./Department";
 
-@Entity()
+@Entity('employee_department')
 export class EmployeeDepartment {
     @PrimaryGeneratedColumn('uuid')
     uuid!: string
