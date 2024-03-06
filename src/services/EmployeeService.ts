@@ -24,6 +24,10 @@ class EmployeeService {
     public async deleteEmployee(uuid: number): Promise<void> {
         await this.employeeRepository.delete(uuid);
     }
+
+    public async searchEmployees(criteria: Partial<Employee>): Promise<Employee[]> {
+        return await this.employeeRepository.find(criteria);
+    }
 }
 
 export default EmployeeService;

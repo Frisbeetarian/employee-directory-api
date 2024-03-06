@@ -9,6 +9,7 @@ import { Skill } from './entities/Skill';
 import { EmployeeSkill } from './entities/EmployeeSkill';
 import { Project } from './entities/Project';
 import { EmployeeProject } from './entities/EmployeeProject';
+import employeeRouter from './routes/employeeRoutes';
 
 dotenv.config();
 
@@ -38,6 +39,8 @@ AppDataSource.initialize()
     .catch((err) => {
         console.error('Error during Data Source initialization', err)
     })
+
+app.use('/api/employees', employeeRouter)
 
 app.use((err: Error, _: express.Request, res: express.Response, __: express.NextFunction) => {
     console.error(err.stack);
