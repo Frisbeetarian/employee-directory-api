@@ -17,6 +17,7 @@ const app = express();
 const port = process.env.PORT || 4020;
 
 // Middleware
+app.use(express.json());
 app.use(helmet());
 
 // Database connection
@@ -27,7 +28,15 @@ const AppDataSource = new DataSource({
     username: process.env.POSTGRESQL_USERNAME,
     password: process.env.POSTGRESQL_PASSWORD,
     database: process.env.POSTGRESQL_DATABASE,
-    entities: [Employee, Department, EmployeeDepartment, Skill, EmployeeSkill, Project, EmployeeProject],
+    entities: [
+        Employee,
+        Department,
+        EmployeeDepartment,
+        Skill,
+        EmployeeSkill,
+        Project,
+        EmployeeProject
+    ],
     synchronize: true,
     logging: true,
 })
@@ -40,6 +49,7 @@ AppDataSource.initialize()
         console.error('Error during Data Source initialization', err)
     })
 
+// Routes
 app.use('/api/employees', employeeRouter)
 
 app.use((err: Error, _: express.Request, res: express.Response, __: express.NextFunction) => {

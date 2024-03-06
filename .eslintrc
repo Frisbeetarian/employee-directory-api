@@ -17,6 +17,27 @@
     "object-curly-spacing": [
       "error",
       "always"
+    ],
+    "array-element-newline": [
+      "error",
+      "always",
+      {
+        "maxItems": 3,
+        "multiline": true
+      }
+    ],
+    "array-bracket-newline": [
+      "error",
+      {
+        "multiline": true
+      }
+    ],
+    "no-multiple-empty-lines": [
+      "error",
+      {
+        "max": 1,
+        "maxEOF": 1
+      }
     ]
   }
 }
