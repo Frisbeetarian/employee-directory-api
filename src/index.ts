@@ -5,6 +5,12 @@ import express from 'express';
 import { DataSource } from 'typeorm';
 import { Employee } from './entities/Employee';
 import helmet from 'helmet';
+import {Department} from "./entities/Department";
+import {EmployeeDepartment} from "./entities/EmployeeDepartment";
+import {Skill} from "./entities/Skill";
+import {EmployeeSkill} from "./entities/EmployeeSkill";
+import {Project} from "./entities/Project";
+import {EmployeeProject} from "./entities/EmployeeProject";
 
 const app = express();
 const port = process.env.PORT || 4020;
@@ -20,7 +26,7 @@ const AppDataSource = new DataSource({
     username: process.env.POSTGRESQL_USERNAME,
     password: process.env.POSTGRESQL_PASSWORD,
     database: process.env.POSTGRESQL_DATABASE,
-    entities: [Employee],
+    entities: [Employee, Department, EmployeeDepartment, Skill, EmployeeSkill, Project, EmployeeProject],
     synchronize: true,
     logging: true,
 })

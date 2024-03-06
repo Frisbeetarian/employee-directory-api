@@ -1,4 +1,14 @@
-import {Column, Entity, PrimaryGeneratedColumn} from "typeorm";
+import {
+    Column,
+    CreateDateColumn,
+    Entity,
+    OneToMany,
+    PrimaryGeneratedColumn,
+    UpdateDateColumn
+} from "typeorm";
+import {EmployeeDepartment} from "./EmployeeDepartment";
+import {EmployeeSkill} from "./EmployeeSkill";
+import {EmployeeProject} from "./EmployeeProject";
 
 @Entity()
 export class Employee {
@@ -26,6 +36,24 @@ export class Employee {
     @Column()
     jobTitle?: string;
 
-    @Column()
+    @Column({nullable: true})
     picture?: string;
+
+    @Column({ nullable: true })
+    biography?: string;
+
+    @OneToMany(() => EmployeeDepartment, employeeDepartment => employeeDepartment.employee)
+    employeeDepartments: EmployeeDepartment[];
+
+    @OneToMany(() => EmployeeSkill, employeeSkill => employeeSkill.employee)
+    employeeSkills: EmployeeSkill[];
+
+    @OneToMany(() => EmployeeProject, employeeProject => employeeProject.employee)
+    employeeProjects: EmployeeProject[];
+
+    @UpdateDateColumn()
+    updatedAt: Date
+
+    @CreateDateColumn()
+    createdAt: Date
 }
