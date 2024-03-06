@@ -1,7 +1,7 @@
 import {
     Column,
     CreateDateColumn,
-    Entity,
+    Entity, JoinTable, ManyToMany,
     ManyToOne,
     OneToMany,
     PrimaryGeneratedColumn,
@@ -9,6 +9,7 @@ import {
 } from "typeorm";
 import {Department} from "./Department";
 import {EmployeeDepartment} from "./EmployeeDepartment";
+import {Skill} from "./Skill";
 
 @Entity()
 export class Employee {
@@ -36,8 +37,11 @@ export class Employee {
     @Column()
     jobTitle?: string;
 
-    @Column()
+    @Column({nullable: true})
     picture?: string;
+
+    @Column({ nullable: true })
+    biography?: string;
 
     @OneToMany(() => EmployeeDepartment, employeeDepartment => employeeDepartment.employee)
     employeeDepartments: EmployeeDepartment[];
