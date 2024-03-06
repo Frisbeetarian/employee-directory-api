@@ -12,8 +12,6 @@ const port = process.env.PORT || 4020;
 // Middleware
 app.use(helmet());
 
-console.log("process.env.DB_USERNAME", process.env.POSTGRESQL_USERNAME)
-
 // Database connection
 const AppDataSource = new DataSource({
     type: "postgres",
