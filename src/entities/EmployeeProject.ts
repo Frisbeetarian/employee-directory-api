@@ -8,17 +8,17 @@ export class EmployeeProject {
     uuid!: string;
 
     @ManyToOne(() => Employee, employee => employee.employeeProjects)
-    employee: Employee;
+    employee!: Employee;
 
     @ManyToOne(() => Project, project => project.employeeProjects)
-    project: Project;
+    project!: Project;
 
     @Column()
     role!: string;
 
     @CreateDateColumn()
-    createdAt: Date;
+    createdAt!: Date;
 
     @UpdateDateColumn()
-    updatedAt: Date;
+    updatedAt!: Date;
 }

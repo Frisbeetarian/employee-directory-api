@@ -26,11 +26,11 @@ export class Department {
     manager!: Employee;
 
     @OneToMany(() => EmployeeDepartment, employeeDepartment => employeeDepartment.department)
-    employeeDepartments: EmployeeDepartment[];
+    employeeDepartments?: EmployeeDepartment[];
 
     @UpdateDateColumn()
-    updatedAt: Date
+    updatedAt!: Date
 
     @CreateDateColumn()
-    createdAt: Date
+    createdAt!: Date
 }

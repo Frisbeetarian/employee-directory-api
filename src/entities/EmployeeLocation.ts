@@ -1,4 +1,5 @@
 import { CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+
 import { Employee } from './Employee';
 import { Location } from './Location';
 
@@ -8,14 +9,14 @@ export class EmployeeLocation {
     uuid!: string;
 
     @ManyToOne(() => Employee, employee => employee.employeeLocations)
-    employee: Employee;
+    employee!: Employee;
 
     @ManyToOne(() => Location, location => location.employeeLocations)
-    location: Location;
+    location!: Location;
 
     @CreateDateColumn()
-    createdAt: Date;
+    createdAt!: Date;
 
     @UpdateDateColumn()
-    updatedAt: Date;
+    updatedAt!: Date;
 }

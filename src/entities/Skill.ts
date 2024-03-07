@@ -10,11 +10,11 @@ export class Skill {
     name!: string;
 
     @OneToMany(() => EmployeeSkill, employeeSkill => employeeSkill.skill)
-    employeeSkills: EmployeeSkill[];
+    employeeSkills?: EmployeeSkill[];
 
     @UpdateDateColumn()
-    updatedAt: Date
+    updatedAt!: Date
 
     @CreateDateColumn()
-    createdAt: Date
+    createdAt!: Date
 }

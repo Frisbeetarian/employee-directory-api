@@ -1,5 +1,3 @@
-import dotenv from 'dotenv';
-
 import { DataSource } from 'typeorm';
 import { faker } from '@faker-js/faker';
 
@@ -10,22 +8,23 @@ import { Project } from '../src/entities/Project';
 import { EmployeeProject } from '../src/entities/EmployeeProject';
 import { Skill } from '../src/entities/Skill';
 import { EmployeeSkill } from '../src/entities/EmployeeSkill';
+import { Location } from '../src/entities/Location';
+import { EmployeeLocation } from '../src/entities/EmployeeLocation';
 
-dotenv.config();
-
-const numberOfEmployees = 150;
-const numberOfDepartments = 5;
-const numberOfProjects = 10;
-const numberOfSkills = 20;
+const numberOfEmployees = 450;
+const numberOfDepartments = 8;
+const numberOfProjects = 23;
+const numberOfSkills = 30;
+const numberOfLocations = 8;
 
 async function generateData() {
     const AppDataSource = new DataSource({
         type: 'postgres',
         host: 'localhost',
-        port: Number(process.env.POSTGRESQL_PORT),
-        username: process.env.POSTGRESQL_USERNAME,
-        password: process.env.POSTGRESQL_PASSWORD,
-        database: process.env.POSTGRESQL_DATABASE,
+        port: 5433,
+        username: 'admin',
+        password: 'password',
+        database: 'employeedirectory',
         entities: [
             Employee,
             Department,
@@ -33,19 +32,37 @@ async function generateData() {
             Skill,
             EmployeeSkill,
             Project,
-            EmployeeProject
+            EmployeeProject,
+            Location,
+            EmployeeLocation
         ],
         synchronize: true,
         logging: true,
-    })
+    });
 
-    AppDataSource.initialize()
+    await AppDataSource.initialize()
         .then(() => {
-            console.log('Data Source has been initialized!')
+            console.log('Data Source has been initialized!');
         })
         .catch((err) => {
-            console.error('Error during Data Source initialization', err)
-        })
+            console.error('Error during Data Source initialization', err);
+        });
+
+    // Roles
+    const roles = [
+        'Software Engineer',
+        'Senior Software Engineer',
+        'Team Lead',
+        'Project Manager',
+        'QA Engineer',
+        'DevOps Engineer',
+        'Product Manager',
+        'UI/UX Designer',
+        'Data Analyst',
+        'Database Administrator',
+        'Technical Writer',
+        'Sales Representative'
+    ];
 
     // Generate departments
     const departments: Department[] = [];
@@ -57,17 +74,31 @@ async function generateData() {
     }
     await AppDataSource.manager.save(departments);
 
+    // Generate locations
+    const locations: Location[] = [];
+    for (let i = 0; i < numberOfLocations; i++) {
+        const location = new Location();
+        location.address = faker.location.streetAddress();
+        location.city = faker.location.city();
+        location.state = faker.location.state();
+        location.country = faker.location.country();
+        location.name = `${location.city} ${location.country}`
+        location.zipCode = faker.location.zipCode();
+        locations.push(location);
+    }
+    await AppDataSource.manager.save(locations);
+
     // Generate employees
     const employees: Employee[] = [];
     for (let i = 0; i < numberOfEmployees; i++) {
         const employee = new Employee();
-        employee.firstName = faker.name.firstName();
-        employee.lastName = faker.name.lastName();
+        employee.firstName = faker.person.firstName();
+        employee.lastName = faker.person.lastName();
         employee.name = `${employee.firstName} ${employee.lastName}`;
         employee.email = faker.internet.email();
-        employee.phoneNumber = faker.phone.phoneNumber();
+        employee.phoneNumber = faker.phone.number();
         employee.hireDate = faker.date.past();
-        employee.jobTitle = faker.name.jobTitle();
+        employee.jobTitle = faker.helpers.arrayElement(roles);
         employee.picture = faker.image.avatar();
         employee.biography = faker.lorem.paragraph();
         employees.push(employee);
@@ -95,34 +126,34 @@ async function generateData() {
 
     // Assign departments to employees
     for (const employee of employees) {
-        const numDepartments = faker.random.number({ min: 1, max: 3 });
-        const selectedDepartments = faker.random.arrayElements(departments, numDepartments);
+        const numDepartments = faker.datatype.number({ min: 1, max: 3 });
+        const selectedDepartments = faker.helpers.arrayElements(departments, numDepartments);
         for (const department of selectedDepartments) {
             const employeeDepartment = new EmployeeDepartment();
             employeeDepartment.employee = employee;
             employeeDepartment.department = department;
-            employeeDepartment.role = faker.name.jobDescriptor();
+            employeeDepartment.role = faker.helpers.arrayElement(roles);
             await AppDataSource.manager.save(employeeDepartment);
         }
     }
 
     // Assign projects to employees
     for (const employee of employees) {
-        const numProjects = faker.random.number({ min: 1, max: 5 });
-        const selectedProjects = faker.random.arrayElements(projects, numProjects);
+        const numProjects = faker.datatype.number({ min: 1, max: 5 });
+        const selectedProjects = faker.helpers.arrayElements(projects, numProjects);
         for (const project of selectedProjects) {
             const employeeProject = new EmployeeProject();
             employeeProject.employee = employee;
             employeeProject.project = project;
-            employeeProject.role = faker.name.jobDescriptor();
+            employeeProject.role = faker.helpers.arrayElement(roles);
             await AppDataSource.manager.save(employeeProject);
         }
     }
 
     // Assign skills to employees
     for (const employee of employees) {
-        const numSkills = faker.random.number({ min: 2, max: 7 });
-        const selectedSkills = faker.random.arrayElements(skills, numSkills);
+        const numSkills = faker.datatype.number({ min: 2, max: 7 });
+        const selectedSkills = faker.helpers.arrayElements(skills, numSkills);
         for (const skill of selectedSkills) {
             const employeeSkill = new EmployeeSkill();
             employeeSkill.employee = employee;
@@ -131,7 +162,19 @@ async function generateData() {
         }
     }
 
-    await AppDataSource.close();
+    // Assign locations to employees
+    for (const employee of employees) {
+        const numLocations = faker.datatype.number({ min: 1, max: 3 });
+        const selectedLocations = faker.helpers.arrayElements(locations, numLocations);
+        for (const location of selectedLocations) {
+            const employeeLocation = new EmployeeLocation();
+            employeeLocation.employee = employee;
+            employeeLocation.location = location;
+            await AppDataSource.manager.save(employeeLocation);
+        }
+    }
+
+    await AppDataSource.destroy();
 }
 
 generateData()

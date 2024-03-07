@@ -25,11 +25,11 @@ export class Location {
     zipCode!: string;
 
     @OneToMany(() => EmployeeLocation, employeeLocation => employeeLocation.location)
-    employeeLocations: EmployeeLocation[];
+    employeeLocations?: EmployeeLocation[];
 
     @CreateDateColumn()
-    createdAt: Date;
+    createdAt!: Date;
 
     @UpdateDateColumn()
-    updatedAt: Date;
+    updatedAt!: Date;
 }

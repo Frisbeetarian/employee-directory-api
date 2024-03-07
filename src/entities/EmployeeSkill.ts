@@ -8,14 +8,14 @@ export class EmployeeSkill {
     uuid!: string;
 
     @ManyToOne(() => Employee, employee => employee.employeeSkills)
-    employee: Employee;
+    employee!: Employee;
 
     @ManyToOne(() => Skill, skill => skill.employeeSkills)
-    skill: Skill;
+    skill!: Skill;
 
     @CreateDateColumn()
-    createdAt: Date;
+    createdAt!: Date;
 
     @UpdateDateColumn()
-    updatedAt: Date;
+    updatedAt!: Date;
 }

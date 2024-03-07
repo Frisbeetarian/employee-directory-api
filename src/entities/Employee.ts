@@ -37,20 +37,20 @@ export class Employee {
     biography?: string;
 
     @OneToMany(() => EmployeeDepartment, employeeDepartment => employeeDepartment.employee)
-    employeeDepartments: EmployeeDepartment[];
+    employeeDepartments?: EmployeeDepartment[];
 
     @OneToMany(() => EmployeeSkill, employeeSkill => employeeSkill.employee)
-    employeeSkills: EmployeeSkill[];
+    employeeSkills?: EmployeeSkill[];
 
     @OneToMany(() => EmployeeProject, employeeProject => employeeProject.employee)
-    employeeProjects: EmployeeProject[];
+    employeeProjects?: EmployeeProject[];
 
     @OneToMany(() => EmployeeLocation, employeeLocation => employeeLocation.employee)
-    employeeLocations: EmployeeLocation[];
+    employeeLocations?: EmployeeLocation[];
 
     @UpdateDateColumn()
-    updatedAt: Date
+    updatedAt!: Date
 
     @CreateDateColumn()
-    createdAt: Date
+    createdAt!: Date
 }
