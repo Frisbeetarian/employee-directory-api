@@ -7,7 +7,7 @@ class DepartmentController {
         this.departmentService = departmentService;
     }
 
-    public async getDepartments(req: Request, res: Response) {
+    static async getDepartments(req: Request, res: Response) {
         try {
             const departments = await this.departmentService.getDepartments();
             res.status(200).json(departments);
@@ -16,7 +16,7 @@ class DepartmentController {
         }
     }
 
-    public async getDepartmentByUuid(req: Request, res: Response) {
+    static async getDepartmentByUuid(req: Request, res: Response) {
         try {
             const uuid = req.params.uuid;
             const department = await this.departmentService.getDepartmentByUuid(uuid);
@@ -26,7 +26,7 @@ class DepartmentController {
         }
     }
 
-    public async createDepartment(req: Request, res: Response) {
+    static async createDepartment(req: Request, res: Response) {
         try {
             const department = await this.departmentService.createDepartment(req.body);
             res.status(201).json(department);
@@ -35,7 +35,7 @@ class DepartmentController {
         }
     }
 
-    public async updateDepartment(req: Request, res: Response) {
+    static async updateDepartment(req: Request, res: Response) {
         try {
             const uuid = req.params.uuid;
             const department = await this.departmentService.updateDepartment(uuid, req.body);
@@ -45,7 +45,7 @@ class DepartmentController {
         }
     }
 
-    public async deleteDepartment(req: Request, res: Response) {
+    static async deleteDepartment(req: Request, res: Response) {
         try {
             const uuid = req.params.uuid;
             await this.departmentService.deleteDepartment(uuid);
