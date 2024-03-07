@@ -5,7 +5,7 @@ class ProjectController {
         this.projectService = projectService;
     }
 
-    public async getProjects(req: Request, res: Response) {
+    static async getProjects(req: Request, res: Response) {
         try {
             const projects = await this.projectService.getProjects();
             res.status(200).json(projects);
@@ -14,7 +14,7 @@ class ProjectController {
         }
     }
 
-    public async getProjectByUuid(req: Request, res: Response) {
+    static async getProjectByUuid(req: Request, res: Response) {
         try {
             const uuid = req.params.uuid;
             const project = await this.projectService.getProjectByUuid(uuid);
@@ -24,7 +24,7 @@ class ProjectController {
         }
     }
 
-    public async createProject(req: Request, res: Response) {
+    static async createProject(req: Request, res: Response) {
         try {
             const project = req.body;
             const newProject = await this.projectService.createProject(project);
@@ -34,7 +34,7 @@ class ProjectController {
         }
     }
 
-    public async updateProject(req: Request, res: Response) {
+    static async updateProject(req: Request, res: Response) {
         try {
             const uuid = req.params.uuid;
             const project = req.body;
@@ -45,7 +45,7 @@ class ProjectController {
         }
     }
 
-    public async deleteProject(req: Request, res: Response) {
+    static async deleteProject(req: Request, res: Response) {
         try {
             const uuid = req.params.uuid;
             await this.projectService.deleteProject(uuid);

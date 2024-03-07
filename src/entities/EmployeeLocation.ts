@@ -1,17 +1,18 @@
 import { CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
-import { Employee } from './Employee';
-import { Skill } from './Skill';
 
-@Entity('employee_skill')
-export class EmployeeSkill {
+import { Employee } from './Employee';
+import { Location } from './Location';
+
+@Entity()
+export class EmployeeLocation {
     @PrimaryGeneratedColumn('uuid')
     uuid!: string;
 
-    @ManyToOne(() => Employee, employee => employee.employeeSkills)
+    @ManyToOne(() => Employee, employee => employee.employeeLocations)
     employee!: Employee;
 
-    @ManyToOne(() => Skill, skill => skill.employeeSkills)
-    skill!: Skill;
+    @ManyToOne(() => Location, location => location.employeeLocations)
+    location!: Location;
 
     @CreateDateColumn()
     createdAt!: Date;

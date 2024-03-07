@@ -9,17 +9,17 @@ export class EmployeeDepartment {
     uuid!: string
 
     @ManyToOne(() => Employee, employee => employee.employeeDepartments)
-    employee: Employee;
+    employee!: Employee;
 
     @ManyToOne(() => Department, department => department.employeeDepartments)
-    department: Department;
+    department!: Department;
 
     @Column()
     role!: string;
 
     @UpdateDateColumn()
-    updatedAt: Date
+    updatedAt!: Date
 
     @CreateDateColumn()
-    createdAt: Date
+    createdAt!: Date
 }

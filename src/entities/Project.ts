@@ -13,11 +13,11 @@ export class Project {
     description?: string;
 
     @OneToMany(() => EmployeeProject, employeeProject => employeeProject.project)
-    employeeProjects: EmployeeProject[];
+    employeeProjects?: EmployeeProject[];
 
     @CreateDateColumn()
-    createdAt: Date;
+    createdAt!: Date;
 
     @UpdateDateColumn()
-    updatedAt: Date;
+    updatedAt!: Date;
 }

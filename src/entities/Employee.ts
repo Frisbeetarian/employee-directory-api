@@ -2,6 +2,7 @@ import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, Up
 import { EmployeeDepartment } from './EmployeeDepartment';
 import { EmployeeSkill } from './EmployeeSkill';
 import { EmployeeProject } from './EmployeeProject';
+import { EmployeeLocation } from './EmployeeLocation';
 
 @Entity()
 export class Employee {
@@ -36,17 +37,20 @@ export class Employee {
     biography?: string;
 
     @OneToMany(() => EmployeeDepartment, employeeDepartment => employeeDepartment.employee)
-    employeeDepartments: EmployeeDepartment[];
+    employeeDepartments?: EmployeeDepartment[];
 
     @OneToMany(() => EmployeeSkill, employeeSkill => employeeSkill.employee)
-    employeeSkills: EmployeeSkill[];
+    employeeSkills?: EmployeeSkill[];
 
     @OneToMany(() => EmployeeProject, employeeProject => employeeProject.employee)
-    employeeProjects: EmployeeProject[];
+    employeeProjects?: EmployeeProject[];
+
+    @OneToMany(() => EmployeeLocation, employeeLocation => employeeLocation.employee)
+    employeeLocations?: EmployeeLocation[];
 
     @UpdateDateColumn()
-    updatedAt: Date
+    updatedAt!: Date
 
     @CreateDateColumn()
-    createdAt: Date
+    createdAt!: Date
 }

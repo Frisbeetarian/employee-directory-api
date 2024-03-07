@@ -14,6 +14,9 @@ import employeeRouter from './routes/employeeRoutes';
 import departmentRouter from './routes/departmentRoutes';
 import projectRouter from './routes/projectRoutes';
 import skillRouter from './routes/skillRoutes';
+import { Location } from './entities/Location';
+import { EmployeeLocation } from './entities/EmployeeLocation';
+import locationRouter from './routes/locationRoutes';
 
 dotenv.config();
 
@@ -39,7 +42,9 @@ const AppDataSource = new DataSource({
         Skill,
         EmployeeSkill,
         Project,
-        EmployeeProject
+        EmployeeProject,
+        Location,
+        EmployeeLocation,
     ],
     synchronize: true,
     logging: true,
@@ -58,6 +63,7 @@ app.use('/api/employees', employeeRouter)
 app.use('/api/departments', departmentRouter)
 app.use('/api/projects', projectRouter)
 app.use('/api/skills', skillRouter)
+app.use('/api/locations', locationRouter)
 
 app.use((err: Error, _: express.Request, res: express.Response, __: express.NextFunction) => {
     console.error(err.stack);
