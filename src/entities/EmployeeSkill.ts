@@ -1,6 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, ManyToOne, CreateDateColumn, UpdateDateColumn } from "typeorm";
-import { Employee } from "./Employee";
-import { Skill } from "./Skill";
+import { CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { Employee } from './Employee';
+import { Skill } from './Skill';
 
 @Entity('employee_skill')
 export class EmployeeSkill {

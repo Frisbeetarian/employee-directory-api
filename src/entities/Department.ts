@@ -6,10 +6,10 @@ import {
     OneToMany,
     PrimaryGeneratedColumn,
     UpdateDateColumn
-} from "typeorm";
+} from 'typeorm';
 
-import {Employee} from "./Employee";
-import {EmployeeDepartment} from "./EmployeeDepartment";
+import { Employee } from './Employee';
+import { EmployeeDepartment } from './EmployeeDepartment';
 
 @Entity()
 export class Department {

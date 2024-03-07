@@ -1,5 +1,5 @@
-import {Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn} from "typeorm";
-import {EmployeeProject} from "./EmployeeProject";
+import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { EmployeeProject } from './EmployeeProject';
 
 @Entity()
 export class Project {

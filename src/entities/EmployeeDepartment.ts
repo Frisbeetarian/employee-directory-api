@@ -1,6 +1,7 @@
-import {CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn} from "typeorm";
-import {Employee} from "./Employee";
-import {Department} from "./Department";
+import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+
+import { Department } from './Department';
+import { Employee } from './Employee';
 
 @Entity('employee_department')
 export class EmployeeDepartment {
@@ -12,6 +13,9 @@ export class EmployeeDepartment {
 
     @ManyToOne(() => Department, department => department.employeeDepartments)
     department: Department;
+
+    @Column()
+    role!: string;
 
     @UpdateDateColumn()
     updatedAt: Date

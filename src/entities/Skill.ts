@@ -1,12 +1,5 @@
-import {
-    Column,
-    CreateDateColumn,
-    Entity,
-    OneToMany,
-    PrimaryGeneratedColumn,
-    UpdateDateColumn
-} from "typeorm";
-import {EmployeeSkill} from "./EmployeeSkill";
+import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { EmployeeSkill } from './EmployeeSkill';
 
 @Entity()
 export class Skill {
