@@ -12,6 +12,8 @@ import { Project } from './entities/Project';
 import { EmployeeProject } from './entities/EmployeeProject';
 import employeeRouter from './routes/employeeRoutes';
 import departmentRouter from './routes/departmentRoutes';
+import projectRouter from './routes/projectRoutes';
+import skillRouter from './routes/skillRoutes';
 
 dotenv.config();
 
@@ -54,6 +56,8 @@ AppDataSource.initialize()
 // Routes
 app.use('/api/employees', employeeRouter)
 app.use('/api/departments', departmentRouter)
+app.use('/api/projects', projectRouter)
+app.use('/api/skills', skillRouter)
 
 app.use((err: Error, _: express.Request, res: express.Response, __: express.NextFunction) => {
     console.error(err.stack);
