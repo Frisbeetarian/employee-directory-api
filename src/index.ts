@@ -1,8 +1,9 @@
 import dotenv from 'dotenv';
 import express from 'express';
 import { DataSource } from 'typeorm';
-import { Employee } from './entities/Employee';
 import helmet from 'helmet';
+
+import { Employee } from './entities/Employee';
 import { Department } from './entities/Department';
 import { EmployeeDepartment } from './entities/EmployeeDepartment';
 import { Skill } from './entities/Skill';
@@ -10,6 +11,7 @@ import { EmployeeSkill } from './entities/EmployeeSkill';
 import { Project } from './entities/Project';
 import { EmployeeProject } from './entities/EmployeeProject';
 import employeeRouter from './routes/employeeRoutes';
+import departmentRouter from './routes/departmentRoutes';
 
 dotenv.config();
 
@@ -51,6 +53,7 @@ AppDataSource.initialize()
 
 // Routes
 app.use('/api/employees', employeeRouter)
+app.use('/api/departments', departmentRouter)
 
 app.use((err: Error, _: express.Request, res: express.Response, __: express.NextFunction) => {
     console.error(err.stack);
