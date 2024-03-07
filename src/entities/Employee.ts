@@ -2,6 +2,7 @@ import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, Up
 import { EmployeeDepartment } from './EmployeeDepartment';
 import { EmployeeSkill } from './EmployeeSkill';
 import { EmployeeProject } from './EmployeeProject';
+import { EmployeeLocation } from './EmployeeLocation';
 
 @Entity()
 export class Employee {
@@ -43,6 +44,9 @@ export class Employee {
 
     @OneToMany(() => EmployeeProject, employeeProject => employeeProject.employee)
     employeeProjects: EmployeeProject[];
+
+    @OneToMany(() => EmployeeLocation, employeeLocation => employeeLocation.employee)
+    employeeLocations: EmployeeLocation[];
 
     @UpdateDateColumn()
     updatedAt: Date
