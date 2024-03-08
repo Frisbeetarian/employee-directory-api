@@ -27,6 +27,7 @@ import LocationService from './services/LocationService';
 import DepartmentController from './controllers/DepartmentController';
 import ProjectController from './controllers/ProjectController';
 import SkillController from './controllers/SkillController';
+import LocationController from './controllers/LocationController';
 
 dotenv.config();
 
@@ -92,13 +93,9 @@ AppDataSource.initialize()
         app.use('/api/skills', skillRouter(skillService))
 
         const locationRepository = AppDataSource.getRepository(Location);
-        const skillService = new SkillService(skillRepository);
         const locationService = new LocationService(locationRepository);
-
-        // app.use('/api/departments', departmentRouter)
-        // app.use('/api/projects', projectRouter)
-        // app.use('/api/skills', skillRouter)
-        // app.use('/api/locations', locationRouter)
+        const locationController = new LocationController(locationService);
+        app.use('/api/locations', locationRouter(locationService))
 
         app.use((err: Error, _: express.Request, res: express.Response, __: express.NextFunction) => {
             console.error(err.stack);
