@@ -1,6 +1,6 @@
-import { Employee } from '../entities/Employee';
-import { AppDataSource } from '../index';
 import { Repository } from 'typeorm';
+
+import { Employee } from '../entities/Employee';
 
 class EmployeeService {
     private employeeRepository: Repository<Employee>;
@@ -10,7 +10,48 @@ class EmployeeService {
     }
 
     public async getEmployees(): Promise<Employee[]> {
-        return await this.employeeRepository.find();
+        const realLimit = 12;
+        const employeesToSend = []
+
+        const employees = await this.employeeRepository.find({
+            relations: [
+                'employeeDepartments.department',
+                'employeeLocations.location',
+                'employeeSkills.skill'
+            ],
+            take: realLimit,
+        })
+
+        employees.forEach(employee => {
+            const employeeData = {
+                uuid: employee.uuid,
+                name: employee.name,
+                email: employee.email,
+                phoneNumber: employee.phoneNumber,
+                hireDate: employee.hireDate,
+                jobTitle: employee.jobTitle,
+                picture: employee.picture,
+                biography: employee.biography,
+                updatedAt: employee.updatedAt,
+                createdAt: employee.createdAt,
+                departments: employee.employeeDepartments?.map(employeeDepartment => ({
+                    uuid: employeeDepartment.uuid,
+                    name: employeeDepartment.department.name
+                })),
+                locations: employee.employeeLocations?.map(employeeLocation => ({
+                    uuid: employeeLocation.uuid,
+                    name: employeeLocation.location.name
+                })),
+                skills: employee.employeeSkills?.map(employeeSkill => ({
+                    uuid: employeeSkill.uuid,
+                    name: employeeSkill.skill.name
+                }))
+            };
+
+            employeesToSend.push(employeeData);
+        });
+
+        return employeesToSend;
     }
 
     public async getEmployeeByUuid(uuid: number): Promise<Employee | null> {
