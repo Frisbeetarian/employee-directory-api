@@ -12,14 +12,19 @@ import { EmployeeSkill } from './entities/EmployeeSkill';
 import { Project } from './entities/Project';
 import { EmployeeProject } from './entities/EmployeeProject';
 import { employeeRouter } from './routes/employeeRoutes';
-import departmentRouter from './routes/departmentRoutes';
-import projectRouter from './routes/projectRoutes';
-import skillRouter from './routes/skillRoutes';
+import { departmentRouter } from './routes/departmentRoutes';
+import { projectRouter } from './routes/projectRoutes';
+import { skillRouter } from './routes/skillRoutes';
 import { Location } from './entities/Location';
 import { EmployeeLocation } from './entities/EmployeeLocation';
-import locationRouter from './routes/locationRoutes';
+import { locationRouter } from './routes/locationRoutes';
 import EmployeeService from './services/EmployeeService';
 import EmployeeController from './controllers/EmployeeController';
+import DepartmentService from './services/DepartmentService';
+import ProjectService from './services/ProjectService';
+import SkillService from './services/SkillService';
+import LocationService from './services/LocationService';
+import DepartmentController from './controllers/DepartmentController';
 
 dotenv.config();
 
@@ -68,7 +73,20 @@ AppDataSource.initialize()
         const employeeService = new EmployeeService(employeeRepository);
         const employeeController = new EmployeeController(employeeService);
         app.use('/api/employees', employeeRouter(employeeController))
-        
+
+        const departmentRepository = AppDataSource.getRepository(Department);
+        const departmentService = new DepartmentService(departmentRepository);
+        const departmentController = new DepartmentController(departmentService);
+        app.use('/api/departments', departmentRouter(departmentController))
+
+        const projectRepository = AppDataSource.getRepository(Project);
+        const skillRepository = AppDataSource.getRepository(Skill);
+        const locationRepository = AppDataSource.getRepository(Location);
+        ``
+        const projectService = new ProjectService(projectRepository);
+        const skillService = new SkillService(skillRepository);
+        const locationService = new LocationService(locationRepository);
+
         // app.use('/api/departments', departmentRouter)
         // app.use('/api/projects', projectRouter)
         // app.use('/api/skills', skillRouter)
