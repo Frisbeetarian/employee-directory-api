@@ -7,11 +7,12 @@ class EmployeeController {
         this.employeeService = employeeService;
     }
 
-    static async getEmployees(req: Request, res: Response) {
+    async getEmployees(req: Request, res: Response) {
         try {
             const employees = await this.employeeService.getEmployees();
             res.status(200).json(employees);
         } catch (error) {
+            console.log('Get employees error:', error.message)
             res.status(500).json({ message: error.message });
         }
     }
