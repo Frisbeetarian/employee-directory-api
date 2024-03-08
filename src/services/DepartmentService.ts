@@ -1,8 +1,13 @@
-import { getRepository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { Department } from '../entities/Department';
+import { Employee } from '../entities/Employee';
 
 class DepartmentService {
-    private departmentRepository = getRepository(Department);
+    private departmentRepository: Repository<Department>;
+
+    constructor(departmentRepository: Repository<Department>) {
+        this.departmentRepository = departmentRepository;
+    }
 
     public async getDepartments(): Promise<Department[]> {
         return await this.departmentRepository.find();

@@ -2,21 +2,23 @@ import express from 'express'
 
 import LocationController from '../controllers/LocationController'
 
-const locationRouter = express.Router()
+export const locationRouter = (controller: LocationController) => {
+    const router = express.Router();
 
-// GET /locations - Get all locations
-locationRouter.get('/', LocationController.getLocations)
+    // GET /locations - Get all locations
+    router.get('/', controller.getLocations.bind(controller))
 
-// GET /locations/:country - Get a project by Country
-locationRouter.get('/:country', LocationController.getLocationByCountry)
+    // GET /locations/:country - Get a project by Country
+    router.get('/:country', controller.getLocationByCountry.bind(controller))
 
-// POST /locations - Create a new location
-locationRouter.post('/', LocationController.createLocation)
+    // POST /locations - Create a new location
+    router.post('/', controller.createLocation.bind(controller))
 
-// PUT /locations/:uuid - Update a location
-locationRouter.put('/:uuid', LocationController.updateLocation);
+    // PUT /locations/:uuid - Update a location
+    router.put('/:uuid', controller.updateLocation.bind(controller))
 
-// DELETE /locations/:uuid - Delete a location
-locationRouter.delete('/:uuid', LocationController.deleteLocation)
+    // DELETE /locations/:uuid - Delete a location
+    router.delete('/:uuid', controller.deleteLocation.bind(controller))
 
-export default locationRouter
+    return router;
+};

@@ -1,3 +1,5 @@
+import SkillService from '../services/SkillService';
+
 class SkillController {
     private skillService: SkillService;
 
@@ -5,7 +7,7 @@ class SkillController {
         this.skillService = skillService;
     }
 
-    static async getSkills(req: Request, res: Response) {
+    async getSkills(req: Request, res: Response) {
         try {
             const skills = await this.skillService.getSkills();
             res.status(200).json(skills);
@@ -14,7 +16,7 @@ class SkillController {
         }
     }
 
-    static async getSkillByUuid(req: Request, res: Response) {
+    async getSkillByUuid(req: Request, res: Response) {
         try {
             const uuid = req.params.uuid;
             const skill = await this.skillService.getSkillByUuid(uuid);
@@ -24,7 +26,7 @@ class SkillController {
         }
     }
 
-    static async createSkill(req: Request, res: Response) {
+    async createSkill(req: Request, res: Response) {
         try {
             const skill = req.body;
             const newSkill = await this.skillService.createSkill(skill);
@@ -34,7 +36,7 @@ class SkillController {
         }
     }
 
-    static async updateSkill(req: Request, res: Response) {
+    async updateSkill(req: Request, res: Response) {
         try {
             const uuid = req.params.uuid;
             const skill = req.body;
@@ -45,7 +47,7 @@ class SkillController {
         }
     }
 
-    static async deleteSkill(req: Request, res: Response) {
+    async deleteSkill(req: Request, res: Response) {
         try {
             const uuid = req.params.uuid;
             await this.skillService.deleteSkill(uuid);
