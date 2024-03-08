@@ -1,8 +1,12 @@
-import { getRepository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { Project } from '../entities/Project';
 
 class ProjectService {
-    private projectRepository = getRepository(Project);
+    private projectRepository: Repository<Project>;
+
+    constructor(projectRepository: Repository<Project>) {
+        this.projectRepository = projectRepository;
+    }
 
     public async getProjects(): Promise<Project[]> {
         return await this.projectRepository.find();

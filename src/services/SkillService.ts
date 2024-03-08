@@ -1,9 +1,13 @@
-import { getRepository } from 'typeorm';
+import { Repository } from 'typeorm';
 
 import { Skill } from '../entities/Skill';
 
 class SkillService {
-    private skillRepository = getRepository(Skill);
+    private skillRepository: Repository<Skill>;
+
+    constructor(skillRepository: Repository<Skill>) {
+        this.skillRepository = skillRepository;
+    }
 
     public async getSkills(): Promise<Skill[]> {
         return await this.skillRepository.find();

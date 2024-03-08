@@ -17,7 +17,7 @@ class EmployeeController {
         }
     }
 
-    static async getEmployeeByUuid(req: Request, res: Response) {
+    async getEmployeeByUuid(req: Request, res: Response) {
         try {
             const uuid = req.params.uuid;
             const employee = await this.employeeService.getEmployeeByUuid(uuid);
@@ -27,7 +27,7 @@ class EmployeeController {
         }
     }
 
-    static async createEmployee(req: Request, res: Response) {
+    async createEmployee(req: Request, res: Response) {
         try {
             const employee = req.body;
             const newEmployee = await this.employeeService.createEmployee(employee);
@@ -37,7 +37,7 @@ class EmployeeController {
         }
     }
 
-    static async updateEmployee(req: Request, res: Response) {
+    async updateEmployee(req: Request, res: Response) {
         try {
             const uuid = req.params.uuid;
             const employee = req.body;
@@ -48,7 +48,7 @@ class EmployeeController {
         }
     }
 
-    static async deleteEmployee(req: Request, res: Response) {
+    async deleteEmployee(req: Request, res: Response) {
         try {
             const uuid = req.params.uuid;
             await this.employeeService.deleteEmployee(uuid);
@@ -58,7 +58,7 @@ class EmployeeController {
         }
     }
 
-    static async searchEmployees(req: Request, res: Response) {
+    async searchEmployees(req: Request, res: Response) {
         try {
             const criteria = req.query;
             const employees = await this.employeeService.searchEmployees(criteria);

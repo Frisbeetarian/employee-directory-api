@@ -1,8 +1,12 @@
-import { getRepository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { Location } from '../entities/Location';
 
 class LocationService {
-    private locationRepository = getRepository(Location);
+    private locationRepository: Repository<Location>;
+
+    constructor(locationRepository: Repository<Location>) {
+        this.locationRepository = locationRepository;
+    }
 
     public async getLocations(): Promise<Location[]> {
         return await this.locationRepository.find();
