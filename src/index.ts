@@ -26,6 +26,7 @@ import SkillService from './services/SkillService';
 import LocationService from './services/LocationService';
 import DepartmentController from './controllers/DepartmentController';
 import ProjectController from './controllers/ProjectController';
+import SkillController from './controllers/SkillController';
 
 dotenv.config();
 
@@ -86,8 +87,11 @@ AppDataSource.initialize()
         app.use('/api/projects', projectRouter(projectController))
 
         const skillRepository = AppDataSource.getRepository(Skill);
+        const skillService = new SkillService(skillRepository);
+        const skillController = new SkillController(skillService);
+        app.use('/api/skills', skillRouter(skillService))
+
         const locationRepository = AppDataSource.getRepository(Location);
-        const projectService = new ProjectService(projectRepository);
         const skillService = new SkillService(skillRepository);
         const locationService = new LocationService(locationRepository);
 
