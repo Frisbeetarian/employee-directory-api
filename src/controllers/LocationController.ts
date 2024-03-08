@@ -8,7 +8,7 @@ class LocationController {
         this.locationService = locationService;
     }
 
-    static async getLocations(req: Request, res: Response) {
+    async getLocations(req: Request, res: Response) {
         try {
             const locations = await this.locationService.getLocations();
             res.status(200).json(locations);
@@ -17,7 +17,7 @@ class LocationController {
         }
     }
 
-    static async getLocationByCountry(req: Request, res: Response) {
+    async getLocationByCountry(req: Request, res: Response) {
         try {
             const country = req.params.country;
             const location = await this.locationService.getLocationByCountry(country);
@@ -27,7 +27,7 @@ class LocationController {
         }
     }
 
-    static async createLocation(req: Request, res: Response) {
+    async createLocation(req: Request, res: Response) {
         try {
             const location = await this.locationService.createLocation(req.body);
             res.status(201).json(location);
@@ -36,7 +36,7 @@ class LocationController {
         }
     }
 
-    static async updateLocation(req: Request, res: Response) {
+    async updateLocation(req: Request, res: Response) {
         try {
             const uuid = req.params.uuid;
             const location = await this.locationService.updateLocation(uuid, req.body);
@@ -46,7 +46,7 @@ class LocationController {
         }
     }
 
-    static async deleteLocation(req: Request, res: Response) {
+    async deleteLocation(req: Request, res: Response) {
         try {
             const uuid = req.params.uuid;
             await this.locationService.deleteLocation(uuid);

@@ -2,21 +2,23 @@ import express from 'express';
 
 import SkillController from '../controllers/SkillController';
 
-const skillRouter = express.Router();
+export const skillRouter = (controller: SkillController) => {
+    const router = express.Router();
 
-// GET /skills - Get all skills
-skillRouter.get('/', SkillController.getSkills)
+    // GET /skills - Get all skills
+    router.get('/', controller.getSkills.bind(controller))
 
-// GET /skills/:uuid - Get a skill by UUID
-skillRouter.get('/:uuid', SkillController.getSkillByUuid)
+    // GET /skills/:uuid - Get a skill by UUID
+    router.get('/:uuid', controller.getSkillByUuid.bind(controller))
 
-// POST /skills - Create a new skill
-skillRouter.post('/', SkillController.createSkill)
+    // POST /skills - Create a new skill
+    router.post('/', controller.createSkill.bind(controller))
 
-// PUT /skills/:uuid - Update a skill
-skillRouter.put('/:uuid', SkillController.updateSkill);
+    // PUT /skills/:uuid - Update a skill
+    router.put('/:uuid', controller.updateSkill.bind(controller))
 
-// DELETE /skills/:uuid - Delete a skill
-skillRouter.delete('/:uuid', SkillController.deleteSkill)
+    // DELETE /skills/:uuid - Delete a skill
+    router.delete('/:uuid', controller.deleteSkill.bind(controller))
 
-export default skillRouter;
+    return router;
+};

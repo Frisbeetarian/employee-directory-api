@@ -5,7 +5,7 @@ import EmployeeController from '../controllers/EmployeeController';
 export const employeeRouter = (controller: EmployeeController) => {
     const router = express.Router();
 
-    router.get('/', controller.getEmployees.bind(controller));
+    router.get('/', controller.getEmployees.bind(controller))
 
     // GET /employees/:uuid - Get an employee by UUID
     router.get('/:uuid', controller.getEmployeeByUuid.bind(controller))
