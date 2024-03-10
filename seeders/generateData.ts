@@ -1,3 +1,4 @@
+import dotenv from 'dotenv';
 import { DataSource } from 'typeorm';
 import { faker } from '@faker-js/faker';
 
@@ -12,6 +13,8 @@ import { Location } from '../src/entities/Location';
 import { EmployeeLocation } from '../src/entities/EmployeeLocation';
 import SearchService from '../src/services/SearchService';
 
+dotenv.config();
+
 const numberOfEmployees = 450;
 const numberOfDepartments = 8;
 const numberOfProjects = 23;
@@ -23,9 +26,9 @@ async function generateData() {
         type: 'postgres',
         host: 'localhost',
         port: 5433,
-        username: 'admin',
-        password: 'password',
-        database: 'employeedirectory',
+        username: process.env.POSTGRESQL_USERNAME,
+        password: process.env.POSTGRESQL_PASSWORD,
+        database: process.env.POSTGRESQL_DATABASE,
         entities: [
             Employee,
             Department,
