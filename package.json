@@ -17,7 +17,8 @@
     "express": "^4.18.3",
     "helmet": "^7.1.0",
     "pg": "^8.11.3",
-    "typeorm": "^0.3.20"
+    "typeorm": "^0.3.20",
+    "@elastic/elasticsearch": "~8.11.0"
   },
   "devDependencies": {
     "@faker-js/faker": "^8.4.1",
