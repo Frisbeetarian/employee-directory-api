@@ -1,6 +1,6 @@
 import { Client } from '@elastic/elasticsearch';
 
-class ElasticsearchService {
+class SearchService {
     private client: Client;
 
     constructor() {
@@ -30,3 +30,5 @@ class ElasticsearchService {
     async filterEmployeesByDepartment(department: string) {
     }
 }
+
+export default SearchService
