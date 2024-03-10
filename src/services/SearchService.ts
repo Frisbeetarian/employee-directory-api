@@ -48,7 +48,9 @@ class SearchService {
 
             await this.client.index({
                 index: 'employees',
-                document: employeeData,
+                document: {
+                    employee: employeeData,
+                },
             });
         }
     }
