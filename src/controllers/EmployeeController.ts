@@ -9,8 +9,18 @@ class EmployeeController {
 
     async getEmployees(req: Request, res: Response) {
         try {
-            const employees = await this.employeeService.getEmployees();
-            res.status(200).json(employees);
+
+            const page = parseInt(req.query.page as string) || 1;
+            const limit = parseInt(req.query.limit as string) || 12;
+
+            const { data: employees, totalCount } = await this.employeeService.getEmployees(page, limit);
+
+            res.status(200).json({
+                data: employees,
+                currentPage: page,
+                totalPages: Math.ceil(totalCount / limit),
+                totalCount,
+            });
         } catch (error) {
             console.log('Get employees error:', error.message)
             res.status(500).json({ message: error.message });
