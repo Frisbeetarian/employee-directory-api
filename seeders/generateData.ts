@@ -10,6 +10,7 @@ import { Skill } from '../src/entities/Skill';
 import { EmployeeSkill } from '../src/entities/EmployeeSkill';
 import { Location } from '../src/entities/Location';
 import { EmployeeLocation } from '../src/entities/EmployeeLocation';
+import SearchService from '../src/services/SearchService';
 
 const numberOfEmployees = 450;
 const numberOfDepartments = 8;
@@ -47,6 +48,8 @@ async function generateData() {
         .catch((err) => {
             console.error('Error during Data Source initialization', err);
         });
+
+    const searchService = new SearchService();
 
     // Roles
     const roles = [
@@ -173,6 +176,8 @@ async function generateData() {
             await AppDataSource.manager.save(employeeLocation);
         }
     }
+
+    await searchService.indexEmployees(employees);
 
     await AppDataSource.destroy();
 }
