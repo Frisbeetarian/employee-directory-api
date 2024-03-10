@@ -13,10 +13,10 @@ class EmployeeController {
             const page = parseInt(req.query.page as string) || 1;
             const limit = parseInt(req.query.limit as string) || 12;
 
-            const { data: employees, totalCount } = await this.employeeService.getEmployees(page, limit);
+            const { employees, totalCount } = await this.employeeService.getEmployees(page, limit);
 
             res.status(200).json({
-                data: employees,
+                employees,
                 currentPage: page,
                 totalPages: Math.ceil(totalCount / limit),
                 totalCount,

@@ -9,21 +9,24 @@ class EmployeeService {
         this.employeeRepository = employeeRepository;
     }
 
-    public async getEmployees(): Promise<Employee[]> {
-        const realLimit = 12;
-        const employeesToSend = []
+    public async getEmployees(page: number, limit: number): Promise<{ employees: any[], totalCount: number }> {
+        const skip = (page - 1) * limit;
 
-        const employees = await this.employeeRepository.find({
+        const [
+            employees,
+            totalCount
+        ] = await this.employeeRepository.findAndCount({
             relations: [
                 'employeeDepartments.department',
                 'employeeLocations.location',
                 'employeeSkills.skill'
             ],
-            take: realLimit,
-        })
+            skip,
+            take: limit,
+        });
 
-        employees.forEach(employee => {
-            const employeeData = {
+        const employeesToSend = employees.map(
+            employee => ({
                 uuid: employee.uuid,
                 name: employee.name,
                 email: employee.email,
@@ -46,12 +49,10 @@ class EmployeeService {
                     uuid: employeeSkill.uuid,
                     name: employeeSkill.skill.name
                 }))
-            };
+            })
+        );
 
-            employeesToSend.push(employeeData);
-        });
-
-        return employeesToSend;
+        return { employees: employeesToSend, totalCount };
     }
 
     public async getEmployeeByUuid(uuid: number): Promise<Employee | null> {
