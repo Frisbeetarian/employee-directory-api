@@ -11,7 +11,7 @@ class SearchService {
     async indexEmployees(employees: Employee[]) {
         for (const employee of employees) {
             const employeeData = {
-                id: employee.uuid,
+                uuid: employee.uuid,
                 firstName: employee.firstName,
                 lastName: employee.lastName,
                 name: employee.name,
@@ -22,21 +22,21 @@ class SearchService {
                 picture: employee.picture,
                 biography: employee.biography,
                 departments: employee.employeeDepartments?.map((ed) => ({
-                    id: ed.department.uuid,
+                    uuid: ed.department.uuid,
                     name: ed.department.name,
                     role: ed.role,
                 })),
                 projects: employee.employeeProjects?.map((ep) => ({
-                    id: ep.project.uuid,
+                    uuid: ep.project.uuid,
                     name: ep.project.name,
                     role: ep.role,
                 })),
                 skills: employee.employeeSkills?.map((es) => ({
-                    id: es.skill.uuid,
+                    uuid: es.skill.uuid,
                     name: es.skill.name,
                 })),
                 locations: employee.employeeLocations?.map((el) => ({
-                    id: el.location.uuid,
+                    uuid: el.location.uuid,
                     name: el.location.name,
                     address: el.location.address,
                     city: el.location.city,
@@ -48,6 +48,7 @@ class SearchService {
 
             await this.client.index({
                 index: 'employees',
+                id: employee.uuid,
                 document: {
                     employee: employeeData,
                 },
@@ -56,28 +57,43 @@ class SearchService {
     }
 
     async searchEmployees(query: string) {
-        const result = await this.client.search({
-            index: 'employees',
-            query: {
-                multi_match: {
-                    query: query,
-                    fields: [
-                        'name',
-                        'jobTitle',
-                        'department',
-                        'location'
-                    ],
+        console.log(query);
+        try {
+
+            const response = await this.client.search({
+                query: {
+                    prefix: { 'employee.name': query },
                 },
-            },
-        });
+            });
+            console.log(response);
 
-        if (result.hits && result.hits.hits.length > 0) {
-            // @ts-ignore
-            return result.hits.hits.map((hit) => hit._source.profile);
-        } else {
-            return []
+            // const result = await this.client.search({
+            //     index: 'employees',
+            //     query: {
+            //         multi_match: {
+            //             query: query,
+            //             fields: [
+            //                 'employee.name',
+            //                 'employee.jobTitle',
+            //                 'employee.departments.name',
+            //                 'employee.locations.name'
+            //             ],
+            //             type: 'best_fields',
+            //         },
+            //     },
+            // });
+            // console.log(result);
+
+            if (response.hits && response.hits.hits.length > 0) {
+                // @ts-ignore
+                return response.hits.hits.map((hit) => hit._source.employee);
+            } else {
+                return []
+            }
+        } catch (error) {
+            console.log(error);
+            return [];
         }
-
     }
 
     // async filterEmployeesByDepartment(department: string) {

@@ -11,7 +11,10 @@ class SearchController {
     async searchEmployees(req: Request, res: Response) {
         try {
             const { query } = req.query;
-            const employees = await this.searchService.searchEmployees(query);
+
+            const employees = await this.searchService.searchEmployees(req.query.query);
+
+            console.log(employees);
             res.status(200).json(employees);
         } catch (error) {
             res.status(500).json({ message: error.message });

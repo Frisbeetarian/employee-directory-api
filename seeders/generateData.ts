@@ -180,6 +180,9 @@ async function generateData() {
         }
     }
 
+    console.log('Indexing employees...');
+    console.log(employees);
+
     await searchService.indexEmployees(employees);
 
     await AppDataSource.destroy();
