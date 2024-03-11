@@ -8,6 +8,80 @@ class SearchService {
         this.client = new Client({ node: 'http://localhost:9200' });
     }
 
+    async indexWithMapping() {
+        const indexName = 'employees';
+
+        const indexExists = await this.client.indices.exists({ index: indexName });
+
+        if (indexExists) {
+            await this.client.indices.delete({ index: indexName });
+            console.log(`Index ${indexName} deleted.`);
+        }
+
+        await this.client.indices.create({
+            index: indexName,
+            body: {
+                mappings: {
+                    properties: {
+                        uuid: { type: 'keyword' },
+                        firstName: { type: 'text' },
+                        lastName: { type: 'text' },
+                        name: {
+                            type: 'text',
+                            fields: {
+                                keyword: {
+                                    type: 'keyword',
+                                    ignore_above: 256
+                                }
+                            }
+                        },
+                        email: { type: 'keyword' },
+                        phoneNumber: { type: 'text' },
+                        hireDate: { type: 'date' },
+                        jobTitle: { type: 'text' },
+                        picture: { type: 'text' },
+                        biography: { type: 'text' },
+                        departments: {
+                            type: 'nested',
+                            properties: {
+                                uuid: { type: 'keyword' },
+                                name: { type: 'text' },
+                                role: { type: 'text' }
+                            }
+                        },
+                        projects: {
+                            type: 'nested',
+                            properties: {
+                                uuid: { type: 'keyword' },
+                                name: { type: 'text' },
+                                role: { type: 'text' }
+                            }
+                        },
+                        skills: {
+                            type: 'nested',
+                            properties: {
+                                uuid: { type: 'keyword' },
+                                name: { type: 'text' }
+                            }
+                        },
+                        locations: {
+                            type: 'nested',
+                            properties: {
+                                uuid: { type: 'keyword' },
+                                name: { type: 'text' },
+                                address: { type: 'text' },
+                                city: { type: 'text' },
+                                state: { type: 'text' },
+                                country: { type: 'text' },
+                                zipCode: { type: 'keyword' }
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+
     async indexEmployees(employees: Employee[]) {
         for (const employee of employees) {
             const employeeData = {
@@ -59,12 +133,12 @@ class SearchService {
     async searchEmployees(query: string) {
         console.log(query);
         try {
-
             const response = await this.client.search({
                 query: {
                     prefix: { 'employee.name': query },
                 },
             });
+
             console.log(response);
 
             // const result = await this.client.search({

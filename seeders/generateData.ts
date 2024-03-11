@@ -181,9 +181,27 @@ async function generateData() {
     }
 
     console.log('Indexing employees...');
-    console.log(employees);
 
-    await searchService.indexEmployees(employees);
+    const employeesWithRelations = await AppDataSource.manager.find(Employee, {
+        relations: {
+            employeeDepartments: {
+                department: true,
+            },
+            employeeProjects: {
+                project: true,
+            },
+            employeeSkills: {
+                skill: true,
+            },
+            employeeLocations: {
+                location: true,
+            },
+        },
+    });
+
+    await searchService.indexWithMapping();
+    await searchService.indexEmployees(employeesWithRelations);
+    console.log('Indexing employees done.');
 
     await AppDataSource.destroy();
 }
