@@ -65,7 +65,6 @@ class DepartmentService {
                         'employeeLocations.location'
                     ],
                 });
-                console.log('employees:', employees)
 
                 const employeesToSend = employees.map(
                     employee => ({

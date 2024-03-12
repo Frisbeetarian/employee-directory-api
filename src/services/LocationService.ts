@@ -58,19 +58,18 @@ class LocationService {
                 take: limit
             });
 
-            const employeeUuids = employeeLocations.map(ed => ed.employee.uuid);
+            const employeeUuids = employeeLocations.map(el => el.employee.uuid);
 
             if (employeeUuids.length > 0) {
                 const employees = await this.employeeRepository.find({
                     where: { uuid: In(employeeUuids) },
                     relations: [
-                        'employeeLocations.department',
+                        'employeeDepartments.department',
                         'employeeSkills.skill',
                         'employeeProjects.project',
                         'employeeLocations.location'
                     ],
                 });
-                console.log('employees:', employees)
 
                 const employeesToSend = employees.map(
                     employee => ({
@@ -84,7 +83,7 @@ class LocationService {
                         biography: employee.biography,
                         updatedAt: employee.updatedAt,
                         createdAt: employee.createdAt,
-                        departments: employee.employeeLocations?.map(employeeDepartment => ({
+                        departments: employee.employeeDepartments?.map(employeeDepartment => ({
                             uuid: employeeDepartment.uuid,
                             name: employeeDepartment.department.name
                         })),
