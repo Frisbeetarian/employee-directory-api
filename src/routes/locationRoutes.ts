@@ -20,5 +20,8 @@ export const locationRouter = (controller: LocationController) => {
     // DELETE /locations/:uuid - Delete a location
     router.delete('/:uuid', controller.deleteLocation.bind(controller))
 
+    // GET /locations/:uuid/employees - Get employees by location UUID
+    router.get('/:uuid/employees', controller.getEmployeesByLocationUuid.bind(controller))
+
     return router;
 };

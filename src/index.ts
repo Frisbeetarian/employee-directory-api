@@ -76,6 +76,7 @@ AppDataSource.initialize()
         console.log('Data Source has been initialized!')
 
         const employeeDepartmentRepository = AppDataSource.getRepository(EmployeeDepartment);
+        const employeeLocationRepository = AppDataSource.getRepository(EmployeeLocation);
 
         const employeeRepository = AppDataSource.getRepository(Employee);
         const employeeService = new EmployeeService(employeeRepository);
@@ -98,7 +99,7 @@ AppDataSource.initialize()
         app.use('/api/skills', skillRouter(skillController))
 
         const locationRepository = AppDataSource.getRepository(Location);
-        const locationService = new LocationService(locationRepository);
+        const locationService = new LocationService(locationRepository, employeeRepository, employeeLocationRepository);
         const locationController = new LocationController(locationService);
         app.use('/api/locations', locationRouter(locationController));
 

@@ -19,6 +19,7 @@ export const departmentRouter = (controller: DepartmentController) => {
     // DELETE /departments/:uuid - Delete a department
     router.delete('/:uuid', controller.deleteDepartment.bind(controller))
 
+    // GET /departments/:uuid/employees - Get employees by department UUID
     router.get('/:uuid/employees', controller.getEmployeesByDepartmentUuid.bind(controller))
 
     return router;
