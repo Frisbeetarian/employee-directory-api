@@ -38,12 +38,19 @@ class DepartmentService {
         await this.departmentRepository.delete(uuid);
     }
 
-    public async getEmployeesByDepartmentUuid(uuid: string) {
+    public async getEmployeesByDepartmentUuid(uuid: string, page: number, limit: number) {
         try {
 
-            const employeeDepartments = await this.employeeDepartmentRepository.find({
+            const skip = (page - 1) * limit;
+
+            const [
+                employeeDepartments,
+                totalCount
+            ] = await this.employeeDepartmentRepository.findAndCount({
                 where: { department: { uuid } },
                 relations: ['employee'],
+                skip,
+                take: limit
             });
 
             const employeeUuids = employeeDepartments.map(ed => ed.employee.uuid);
@@ -58,8 +65,36 @@ class DepartmentService {
                         'employeeLocations.location'
                     ],
                 });
+                console.log('employees:', employees)
 
-                return employees;
+                const employeesToSend = employees.map(
+                    employee => ({
+                        uuid: employee.uuid,
+                        name: employee.name,
+                        email: employee.email,
+                        phoneNumber: employee.phoneNumber,
+                        hireDate: employee.hireDate,
+                        jobTitle: employee.jobTitle,
+                        picture: employee.picture,
+                        biography: employee.biography,
+                        updatedAt: employee.updatedAt,
+                        createdAt: employee.createdAt,
+                        departments: employee.employeeDepartments?.map(employeeDepartment => ({
+                            uuid: employeeDepartment.uuid,
+                            name: employeeDepartment.department.name
+                        })),
+                        locations: employee.employeeLocations?.map(employeeLocation => ({
+                            uuid: employeeLocation.uuid,
+                            name: employeeLocation.location.name
+                        })),
+                        skills: employee.employeeSkills?.map(employeeSkill => ({
+                            uuid: employeeSkill.uuid,
+                            name: employeeSkill.skill.name
+                        }))
+                    })
+                );
+
+                return { employees: employeesToSend, totalCount };
             }
         } catch (error) {
             console.log(error);
