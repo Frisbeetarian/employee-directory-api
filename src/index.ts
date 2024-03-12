@@ -75,13 +75,15 @@ AppDataSource.initialize()
     .then(() => {
         console.log('Data Source has been initialized!')
 
+        const employeeDepartmentRepository = AppDataSource.getRepository(EmployeeDepartment);
+
         const employeeRepository = AppDataSource.getRepository(Employee);
         const employeeService = new EmployeeService(employeeRepository);
         const employeeController = new EmployeeController(employeeService);
         app.use('/api/employees', employeeRouter(employeeController))
 
         const departmentRepository = AppDataSource.getRepository(Department);
-        const departmentService = new DepartmentService(departmentRepository);
+        const departmentService = new DepartmentService(departmentRepository, employeeRepository, employeeDepartmentRepository);
         const departmentController = new DepartmentController(departmentService);
         app.use('/api/departments', departmentRouter(departmentController))
 

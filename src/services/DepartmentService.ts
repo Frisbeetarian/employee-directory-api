@@ -1,12 +1,20 @@
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { Department } from '../entities/Department';
 import { Employee } from '../entities/Employee';
+import { EmployeeDepartment } from '../entities/EmployeeDepartment';
 
 class DepartmentService {
     private departmentRepository: Repository<Department>;
+    private employeeRepository: Repository<Employee>;
+    private employeeDepartmentRepository: Repository<EmployeeDepartment>;
 
-    constructor(departmentRepository: Repository<Department>) {
+    constructor(departmentRepository: Repository<Department>,
+                employeeRepository: Repository<Employee>,
+                employeeDepartmentRepository: Repository<EmployeeDepartment>
+    ) {
         this.departmentRepository = departmentRepository;
+        this.employeeRepository = employeeRepository;
+        this.employeeDepartmentRepository = employeeDepartmentRepository;
     }
 
     public async getDepartments(): Promise<Department[]> {
@@ -31,12 +39,33 @@ class DepartmentService {
     }
 
     public async getEmployeesByDepartmentUuid(uuid: string) {
-        return await this.departmentRepository
-            .createQueryBuilder('department')
-            .leftJoin('department.employeeDepartments', 'employeeDepartment')
-            .leftJoin('employeeDepartment.employee', 'employee')
-            .where('department.uuid = :uuid', { uuid })
-            .getMany();
+        try {
+
+            const employeeDepartments = await this.employeeDepartmentRepository.find({
+                where: { department: { uuid } },
+                relations: ['employee'],
+            });
+
+            const employeeUuids = employeeDepartments.map(ed => ed.employee.uuid);
+
+            if (employeeUuids.length > 0) {
+                const employees = await this.employeeRepository.find({
+                    where: { uuid: In(employeeUuids) },
+                    relations: [
+                        'employeeDepartments.department',
+                        'employeeSkills.skill',
+                        'employeeProjects.project',
+                        'employeeLocations.location'
+                    ],
+                });
+
+                return employees;
+            }
+        } catch (error) {
+            console.log(error);
+            return [];
+
+        }
     }
 }
 

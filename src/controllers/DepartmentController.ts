@@ -59,6 +59,7 @@ class DepartmentController {
         try {
             const uuid = req.params.uuid;
             const employees = await this.departmentService.getEmployeesByDepartmentUuid(uuid);
+            console.log('employees:', employees);
             res.status(200).json(employees);
         } catch (error) {
             res.status(500).json({ message: error.message });
