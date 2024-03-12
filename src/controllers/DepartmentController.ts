@@ -54,6 +54,16 @@ class DepartmentController {
             res.status(500).json({ message: error.message });
         }
     }
+
+    async getEmployeesByDepartmentUuid(req: Request, res: Response) {
+        try {
+            const uuid = req.params.uuid;
+            const employees = await this.departmentService.getEmployeesByDepartmentUuid(uuid);
+            res.status(200).json(employees);
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    }
 }
 
 export default DepartmentController;

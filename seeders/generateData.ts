@@ -17,7 +17,7 @@ dotenv.config();
 
 const numberOfEmployees = 450;
 const numberOfDepartments = 8;
-const numberOfProjects = 23;
+const numberOfProjects = 5;
 const numberOfSkills = 30;
 const numberOfLocations = 8;
 

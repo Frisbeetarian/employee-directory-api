@@ -29,6 +29,15 @@ class DepartmentService {
     public async deleteDepartment(uuid: string): Promise<void> {
         await this.departmentRepository.delete(uuid);
     }
+
+    public async getEmployeesByDepartmentUuid(uuid: string) {
+        return await this.departmentRepository
+            .createQueryBuilder('department')
+            .leftJoin('department.employeeDepartments', 'employeeDepartment')
+            .leftJoin('employeeDepartment.employee', 'employee')
+            .where('department.uuid = :uuid', { uuid })
+            .getMany();
+    }
 }
 
 export default DepartmentService
