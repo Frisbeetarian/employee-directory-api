@@ -11,6 +11,7 @@ import { Project } from '../entities/Project';
 import { Skill } from '../entities/Skill';
 import { Location } from '../entities/Location';
 import { faker } from '@faker-js/faker';
+import SearchService from './SearchService';
 
 class EmployeeService {
     private employeeRepository: Repository<Employee>;
@@ -186,6 +187,9 @@ class EmployeeService {
                     'employeeLocations.location'
                 ]
             });
+
+            const searchService = new SearchService();
+            await searchService.indexEmployees([employeeToSend]);
 
             return {
                 uuid: employeeToSend?.uuid,
