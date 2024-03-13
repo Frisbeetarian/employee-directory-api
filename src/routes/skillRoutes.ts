@@ -21,7 +21,7 @@ export const skillRouter = (controller: SkillController) => {
     router.delete('/:uuid', controller.deleteSkill.bind(controller))
 
     // GET /skills/:uuid/employees - Get employees by skill UUID
-    router.get('/:uuid/employees', controller.getEmployeesBySKillUuid.bind(controller))
+    router.get('/:uuid/employees', controller.getEmployeesBySkillUuid.bind(controller))
 
     return router;
 };

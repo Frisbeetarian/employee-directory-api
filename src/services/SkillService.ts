@@ -52,6 +52,7 @@ class SkillService {
             });
 
             const employeeUuids = employeeSkills.map(el => el.employee.uuid);
+            console.log('employeeUuids:', employeeUuids)
 
             if (employeeUuids.length > 0) {
                 const employees = await this.employeeRepository.find({
@@ -60,10 +61,10 @@ class SkillService {
                         'employeeDepartments.department',
                         'employeeSkills.skill',
                         'employeeProjects.project',
-                        'employeeSkills.location'
+                        'employeeLocations.location'
                     ],
                 });
-
+                console.log('employees:', employees)
                 const employeesToSend = employees.map(
                     employee => ({
                         uuid: employee.uuid,

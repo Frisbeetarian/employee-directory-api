@@ -222,6 +222,7 @@ async function generateData() {
         'Nuxt.js',
         'Svelte',
     ]
+    
     // Generate skills
     const skills: Skill[] = [];
     for (let i = 0; i < numberOfSkills; i++) {
