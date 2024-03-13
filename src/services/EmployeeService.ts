@@ -119,7 +119,7 @@ class EmployeeService {
             employeeToSave.jobTitle = employee.jobTitle;
             employeeToSave.biography = employee?.biography;
             employeeToSave.picture = employee?.picture;
-            // employeeToSave.hireDate = null;
+            employeeToSave.hireDate = employee?.hireDate;
 
             const savedEmployee = await queryRunner.manager.save(employeeToSave);
 
@@ -232,7 +232,7 @@ class EmployeeService {
         return await this.employeeRepository.findOne(uuid);
     }
 
-    public async deleteEmployee(uuid: number): Promise<void> {
+    public async deleteEmployee(uuid: string): Promise<void> {
         const queryRunner = AppDataSource.createQueryRunner();
 
         await queryRunner.connect();
@@ -246,14 +246,13 @@ class EmployeeService {
             await queryRunner.manager.delete(Employee, { uuid });
 
             await queryRunner.commitTransaction();
-
-            const searchService = new SearchService();
-            await searchService.removeEmployeeFromIndex(uuid);
         } catch (err) {
             await queryRunner.rollbackTransaction();
             throw err;
         } finally {
             await queryRunner.release();
+            const searchService = new SearchService();
+            await searchService.removeEmployeeFromIndex(uuid);
         }
     }
 
