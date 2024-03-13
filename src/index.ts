@@ -49,7 +49,7 @@ app.use(
 )
 
 // Database connection
-const AppDataSource = new DataSource({
+export const AppDataSource = new DataSource({
     type: 'postgres',
     host: 'localhost',
     port: Number(process.env.POSTGRESQL_PORT),

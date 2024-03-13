@@ -1,6 +1,11 @@
-import { Repository } from 'typeorm';
+import { getConnection, Repository } from 'typeorm';
 
 import { Employee } from '../entities/Employee';
+import { EmployeeDepartment } from '../entities/EmployeeDepartment';
+import { EmployeeSkill } from '../entities/EmployeeSkill';
+import { EmployeeProject } from '../entities/EmployeeProject';
+import { EmployeeLocation } from '../entities/EmployeeLocation';
+import { AppDataSource } from '../index';
 
 class EmployeeService {
     private employeeRepository: Repository<Employee>;
@@ -10,54 +15,59 @@ class EmployeeService {
     }
 
     public async getEmployees(page: number, limit: number): Promise<{ employees: any[], totalCount: number }> {
-        const skip = (page - 1) * limit;
+        try {
 
-        const [
-            employees,
-            totalCount
-        ] = await this.employeeRepository.findAndCount({
-            relations: [
-                'employeeDepartments.department',
-                'employeeLocations.location',
-                'employeeProjects.project',
-                'employeeSkills.skill'
-            ],
-            skip,
-            take: limit,
-        });
+            const skip = (page - 1) * limit;
 
-        const employeesToSend = employees.map(
-            employee => ({
-                uuid: employee.uuid,
-                name: employee.name,
-                email: employee.email,
-                phoneNumber: employee.phoneNumber,
-                hireDate: employee.hireDate,
-                jobTitle: employee.jobTitle,
-                picture: employee.picture,
-                biography: employee.biography,
-                updatedAt: employee.updatedAt,
-                createdAt: employee.createdAt,
-                departments: employee.employeeDepartments?.map(employeeDepartment => ({
-                    uuid: employeeDepartment.uuid,
-                    name: employeeDepartment.department.name
-                })),
-                locations: employee.employeeLocations?.map(employeeLocation => ({
-                    uuid: employeeLocation.uuid,
-                    name: employeeLocation.location.name
-                })),
-                projects: employee.employeeProjects?.map(employeeProject => ({
-                    uuid: employeeProject.uuid,
-                    name: employeeProject.project.name
-                })),
-                skills: employee.employeeSkills?.map(employeeSkill => ({
-                    uuid: employeeSkill.uuid,
-                    name: employeeSkill.skill.name
-                }))
-            })
-        );
+            const [
+                employees,
+                totalCount
+            ] = await this.employeeRepository.findAndCount({
+                relations: [
+                    'employeeDepartments.department',
+                    'employeeLocations.location',
+                    'employeeProjects.project',
+                    'employeeSkills.skill'
+                ],
+                skip,
+                take: limit,
+            });
 
-        return { employees: employeesToSend, totalCount };
+            const employeesToSend = employees.map(
+                employee => ({
+                    uuid: employee.uuid,
+                    name: employee.name,
+                    email: employee.email,
+                    phoneNumber: employee.phoneNumber,
+                    hireDate: employee.hireDate,
+                    jobTitle: employee.jobTitle,
+                    picture: employee.picture,
+                    biography: employee.biography,
+                    updatedAt: employee.updatedAt,
+                    createdAt: employee.createdAt,
+                    departments: employee.employeeDepartments?.map(employeeDepartment => ({
+                        uuid: employeeDepartment.uuid,
+                        name: employeeDepartment.department.name
+                    })),
+                    locations: employee.employeeLocations?.map(employeeLocation => ({
+                        uuid: employeeLocation.uuid,
+                        name: employeeLocation.location.name
+                    })),
+                    projects: employee.employeeProjects?.map(employeeProject => ({
+                        uuid: employeeProject.uuid,
+                        name: employeeProject.project.name
+                    })),
+                    skills: employee.employeeSkills?.map(employeeSkill => ({
+                        uuid: employeeSkill.uuid,
+                        name: employeeSkill.skill.name
+                    }))
+                })
+            );
+
+            return { employees: employeesToSend, totalCount };
+        } catch (error) {
+            throw error;
+        }
     }
 
     public async getEmployeeByUuid(uuid: number): Promise<Employee | null> {
@@ -74,7 +84,25 @@ class EmployeeService {
     }
 
     public async deleteEmployee(uuid: number): Promise<void> {
-        await this.employeeRepository.delete(uuid);
+        const queryRunner = AppDataSource.createQueryRunner();
+
+        await queryRunner.connect();
+        await queryRunner.startTransaction();
+        try {
+            await queryRunner.manager.delete(EmployeeDepartment, { employee: { uuid } });
+            await queryRunner.manager.delete(EmployeeSkill, { employee: { uuid } });
+            await queryRunner.manager.delete(EmployeeProject, { employee: { uuid } });
+            await queryRunner.manager.delete(EmployeeLocation, { employee: { uuid } });
+
+            await queryRunner.manager.delete(Employee, { uuid });
+
+            await queryRunner.commitTransaction();
+        } catch (err) {
+            await queryRunner.rollbackTransaction();
+            throw err;
+        } finally {
+            await queryRunner.release();
+        }
     }
 
     public async searchEmployees(criteria: Partial<Employee>): Promise<Employee[]> {
