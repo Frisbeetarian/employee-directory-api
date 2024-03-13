@@ -247,6 +247,9 @@ class EmployeeService {
             await queryRunner.manager.delete(Employee, { uuid });
 
             await queryRunner.commitTransaction();
+
+            const searchService = new SearchService();
+            await searchService.removeEmployeeFromIndex(uuid);
         } catch (err) {
             await queryRunner.rollbackTransaction();
             throw err;
