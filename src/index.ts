@@ -77,6 +77,8 @@ AppDataSource.initialize()
 
         const employeeDepartmentRepository = AppDataSource.getRepository(EmployeeDepartment);
         const employeeLocationRepository = AppDataSource.getRepository(EmployeeLocation);
+        const employeeProjectRepository = AppDataSource.getRepository(EmployeeProject);
+        const employeeSkillRepository = AppDataSource.getRepository(EmployeeSkill);
 
         const employeeRepository = AppDataSource.getRepository(Employee);
         const employeeService = new EmployeeService(employeeRepository);
@@ -89,12 +91,12 @@ AppDataSource.initialize()
         app.use('/api/departments', departmentRouter(departmentController))
 
         const projectRepository = AppDataSource.getRepository(Project);
-        const projectService = new ProjectService(projectRepository);
+        const projectService = new ProjectService(projectRepository, employeeRepository, employeeProjectRepository);
         const projectController = new ProjectController(projectService);
         app.use('/api/projects', projectRouter(projectController))
 
         const skillRepository = AppDataSource.getRepository(Skill);
-        const skillService = new SkillService(skillRepository);
+        const skillService = new SkillService(skillRepository, employeeRepository, employeeSkillRepository);
         const skillController = new SkillController(skillService);
         app.use('/api/skills', skillRouter(skillController))
 
