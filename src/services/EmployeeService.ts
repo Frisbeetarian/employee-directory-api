@@ -19,6 +19,7 @@ class EmployeeService {
             relations: [
                 'employeeDepartments.department',
                 'employeeLocations.location',
+                'employeeProjects.project',
                 'employeeSkills.skill'
             ],
             skip,
@@ -44,6 +45,10 @@ class EmployeeService {
                 locations: employee.employeeLocations?.map(employeeLocation => ({
                     uuid: employeeLocation.uuid,
                     name: employeeLocation.location.name
+                })),
+                projects: employee.employeeProjects?.map(employeeProject => ({
+                    uuid: employeeProject.uuid,
+                    name: employeeProject.project.name
                 })),
                 skills: employee.employeeSkills?.map(employeeSkill => ({
                     uuid: employeeSkill.uuid,
