@@ -54,6 +54,30 @@ class DepartmentController {
             res.status(500).json({ message: error.message });
         }
     }
+
+    async getEmployeesByDepartmentUuid(req: Request, res: Response) {
+        try {
+            const {
+                page,
+                limit
+            } = req.query;
+
+            const {
+                employees,
+                totalCount
+            } = await this.departmentService.getEmployeesByDepartmentUuid(req.params.uuid, page, limit);
+
+            res.status(200).json({
+                employees,
+                currentPage: page,
+                totalPages: Math.ceil(totalCount / limit),
+                totalCount,
+            });
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+
+        }
+    }
 }
 
 export default DepartmentController;

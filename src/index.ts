@@ -28,6 +28,9 @@ import DepartmentController from './controllers/DepartmentController';
 import ProjectController from './controllers/ProjectController';
 import SkillController from './controllers/SkillController';
 import LocationController from './controllers/LocationController';
+import { searchRouter } from './routes/searchRoutes';
+import SearchService from './services/SearchService';
+import SearchController from './controllers/SearchController';
 
 dotenv.config();
 
@@ -72,30 +75,39 @@ AppDataSource.initialize()
     .then(() => {
         console.log('Data Source has been initialized!')
 
+        const employeeDepartmentRepository = AppDataSource.getRepository(EmployeeDepartment);
+        const employeeLocationRepository = AppDataSource.getRepository(EmployeeLocation);
+        const employeeProjectRepository = AppDataSource.getRepository(EmployeeProject);
+        const employeeSkillRepository = AppDataSource.getRepository(EmployeeSkill);
+
         const employeeRepository = AppDataSource.getRepository(Employee);
         const employeeService = new EmployeeService(employeeRepository);
         const employeeController = new EmployeeController(employeeService);
         app.use('/api/employees', employeeRouter(employeeController))
 
         const departmentRepository = AppDataSource.getRepository(Department);
-        const departmentService = new DepartmentService(departmentRepository);
+        const departmentService = new DepartmentService(departmentRepository, employeeRepository, employeeDepartmentRepository);
         const departmentController = new DepartmentController(departmentService);
         app.use('/api/departments', departmentRouter(departmentController))
 
         const projectRepository = AppDataSource.getRepository(Project);
-        const projectService = new ProjectService(projectRepository);
+        const projectService = new ProjectService(projectRepository, employeeRepository, employeeProjectRepository);
         const projectController = new ProjectController(projectService);
         app.use('/api/projects', projectRouter(projectController))
 
         const skillRepository = AppDataSource.getRepository(Skill);
-        const skillService = new SkillService(skillRepository);
+        const skillService = new SkillService(skillRepository, employeeRepository, employeeSkillRepository);
         const skillController = new SkillController(skillService);
-        app.use('/api/skills', skillRouter(skillService))
+        app.use('/api/skills', skillRouter(skillController))
 
         const locationRepository = AppDataSource.getRepository(Location);
-        const locationService = new LocationService(locationRepository);
+        const locationService = new LocationService(locationRepository, employeeRepository, employeeLocationRepository);
         const locationController = new LocationController(locationService);
-        app.use('/api/locations', locationRouter(locationService))
+        app.use('/api/locations', locationRouter(locationController));
+
+        const searchService = new SearchService();
+        const searchController = new SearchController(searchService);
+        app.use('/api/search', searchRouter(searchController));
 
         app.use((err: Error, _: express.Request, res: express.Response, __: express.NextFunction) => {
             console.error(err.stack);

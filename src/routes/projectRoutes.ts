@@ -19,5 +19,9 @@ export const projectRouter = (controller: ProjectController) => {
 
     // DELETE /projects/:uuid - Delete a project
     router.delete('/:uuid', controller.deleteProject.bind(controller))
+
+    // GET /projects/:uuid/employees - Get employees by project UUID
+    router.get('/:uuid/employees', controller.getEmployeesByProjectUuid.bind(controller))
+
     return router;
 };

@@ -56,6 +56,30 @@ class SkillController {
             res.status(500).json({ message: error.message });
         }
     }
+
+    async getEmployeesBySkillUuid(req: Request, res: Response) {
+        try {
+            const {
+                page,
+                limit
+            } = req.query;
+
+            const {
+                employees,
+                totalCount
+            } = await this.skillService.getEmployeesBySkillUuid(req.params.uuid, page, limit);
+
+            res.status(200).json({
+                employees,
+                currentPage: page,
+                totalPages: Math.ceil(totalCount / limit),
+                totalCount,
+            });
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+
+        }
+    }
 }
 
 export default SkillController;
