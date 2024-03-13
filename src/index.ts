@@ -81,26 +81,27 @@ AppDataSource.initialize()
         const employeeSkillRepository = AppDataSource.getRepository(EmployeeSkill);
 
         const employeeRepository = AppDataSource.getRepository(Employee);
-        const employeeService = new EmployeeService(employeeRepository);
+        const departmentRepository = AppDataSource.getRepository(Department);
+        const projectRepository = AppDataSource.getRepository(Project);
+        const skillRepository = AppDataSource.getRepository(Skill);
+        const locationRepository = AppDataSource.getRepository(Location);
+
+        const employeeService = new EmployeeService(employeeRepository, departmentRepository, locationRepository, projectRepository, skillRepository, employeeDepartmentRepository, employeeProjectRepository, employeeSkillRepository, employeeLocationRepository);
         const employeeController = new EmployeeController(employeeService);
         app.use('/api/employees', employeeRouter(employeeController))
 
-        const departmentRepository = AppDataSource.getRepository(Department);
         const departmentService = new DepartmentService(departmentRepository, employeeRepository, employeeDepartmentRepository);
         const departmentController = new DepartmentController(departmentService);
         app.use('/api/departments', departmentRouter(departmentController))
 
-        const projectRepository = AppDataSource.getRepository(Project);
         const projectService = new ProjectService(projectRepository, employeeRepository, employeeProjectRepository);
         const projectController = new ProjectController(projectService);
         app.use('/api/projects', projectRouter(projectController))
 
-        const skillRepository = AppDataSource.getRepository(Skill);
         const skillService = new SkillService(skillRepository, employeeRepository, employeeSkillRepository);
         const skillController = new SkillController(skillService);
         app.use('/api/skills', skillRouter(skillController))
 
-        const locationRepository = AppDataSource.getRepository(Location);
         const locationService = new LocationService(locationRepository, employeeRepository, employeeLocationRepository);
         const locationController = new LocationController(locationService);
         app.use('/api/locations', locationRouter(locationController));
