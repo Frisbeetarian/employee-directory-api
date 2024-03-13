@@ -83,6 +83,10 @@ class ProjectService {
                             uuid: employeeLocation.uuid,
                             name: employeeLocation.location.name
                         })),
+                        projects: employee.employeeProjects?.map(employeeProject => ({
+                            uuid: employeeProject.uuid,
+                            name: employeeProject.project.name
+                        })),
                         skills: employee.employeeSkills?.map(employeeSkill => ({
                             uuid: employeeSkill.uuid,
                             name: employeeSkill.skill.name
