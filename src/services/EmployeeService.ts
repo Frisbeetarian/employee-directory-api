@@ -10,7 +10,6 @@ import { Department } from '../entities/Department';
 import { Project } from '../entities/Project';
 import { Skill } from '../entities/Skill';
 import { Location } from '../entities/Location';
-import { faker } from '@faker-js/faker';
 import SearchService from './SearchService';
 
 class EmployeeService {
