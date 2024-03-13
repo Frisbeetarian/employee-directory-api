@@ -104,6 +104,11 @@ class EmployeeService {
     }
 
     public async createEmployee(employee: Employee): Promise<Employee> {
+        const queryRunner = this.employeeRepository.manager.connection.createQueryRunner();
+
+        await queryRunner.connect();
+        await queryRunner.startTransaction();
+
         try {
             const employeeToSave = new Employee();
             employeeToSave.name = employee.name;
@@ -116,10 +121,10 @@ class EmployeeService {
             employeeToSave.picture = employee?.picture;
             // employeeToSave.hireDate = null;
 
-            const savedEmployee = await this.employeeRepository.save(employeeToSave);
+            const savedEmployee = await queryRunner.manager.save(employeeToSave);
 
             if (employee.selectedDepartments && employee.selectedDepartments.length) {
-                const departments = await this.departmentRepository.findBy({
+                const departments = await queryRunner.manager.getRepository(Department).findBy({
                     uuid: In(employee.selectedDepartments)
                 });
 
@@ -127,12 +132,12 @@ class EmployeeService {
                     const employeeDepartment = new EmployeeDepartment();
                     employeeDepartment.employee = savedEmployee;
                     employeeDepartment.department = department;
-                    await this.employeeDepartmentRepository.save(employeeDepartment);
+                    await queryRunner.manager.getRepository(EmployeeDepartment).save(employeeDepartment);
                 }
             }
 
             if (employee.selectedProjects && employee.selectedProjects.length) {
-                const projects = await this.projectRepository.findBy({
+                const projects = await queryRunner.manager.getRepository(Project).findBy({
                     uuid: In(employee.selectedProjects)
                 });
 
@@ -140,12 +145,12 @@ class EmployeeService {
                     const employeeProject = new EmployeeProject();
                     employeeProject.employee = savedEmployee;
                     employeeProject.project = project;
-                    await this.employeeProjectRepository.save(employeeProject);
+                    await queryRunner.manager.getRepository(EmployeeProject).save(employeeProject);
                 }
             }
 
             if (employee.selectedSkills && employee.selectedSkills.length) {
-                const skills = await this.skillRepository.findBy({
+                const skills = await queryRunner.manager.getRepository(Skill).findBy({
                     uuid: In(employee.selectedSkills)
                 });
 
@@ -153,12 +158,12 @@ class EmployeeService {
                     const employeeSkill = new EmployeeSkill();
                     employeeSkill.employee = savedEmployee;
                     employeeSkill.skill = skill;
-                    await this.employeeSkillRepository.save(employeeSkill);
+                    await queryRunner.manager.getRepository(EmployeeSkill).save(employeeSkill);
                 }
             }
 
             if (employee.selectedLocations && employee.selectedLocations.length) {
-                const locations = await this.locationRepository.findBy({
+                const locations = await queryRunner.manager.getRepository(Location).findBy({
                     uuid: In(employee.selectedLocations)
                 });
 
@@ -166,9 +171,11 @@ class EmployeeService {
                     const employeeLocation = new EmployeeLocation();
                     employeeLocation.employee = savedEmployee;
                     employeeLocation.location = location;
-                    await this.employeeLocationRepository.save(employeeLocation);
+                    await queryRunner.manager.getRepository(EmployeeLocation).save(employeeLocation);
                 }
             }
+
+            await queryRunner.commitTransaction();
 
             const employeeToSend = await this.employeeRepository.findOne({
                 where: { uuid: savedEmployee.uuid },
@@ -210,7 +217,10 @@ class EmployeeService {
             }
 
         } catch (error) {
+            await queryRunner.rollbackTransaction();
             throw error;
+        } finally {
+            await queryRunner.release();
         }
     }
 
