@@ -102,7 +102,6 @@ class DepartmentService {
         } catch (error) {
             console.log(error);
             return [];
-
         }
     }
 }
