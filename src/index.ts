@@ -5,6 +5,8 @@ import helmet from 'helmet';
 // @ts-ignore
 import cors from 'cors'
 
+import { __prod__ } from './constants'
+
 import { Employee } from './entities/Employee';
 import { Department } from './entities/Department';
 import { EmployeeDepartment } from './entities/EmployeeDepartment';
@@ -70,7 +72,7 @@ export const AppDataSource = new DataSource({
         Location,
         EmployeeLocation,
     ],
-    synchronize: true,
+    synchronize: !__prod__,
     logging: true,
 })
 

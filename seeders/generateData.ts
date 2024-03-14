@@ -45,8 +45,21 @@ async function generateData() {
     });
 
     await AppDataSource.initialize()
-        .then(() => {
+        .then(async () => {
             console.log('Data Source has been initialized!');
+
+            // Clear the tables
+            await AppDataSource.getRepository(EmployeeLocation).clear();
+            await AppDataSource.getRepository(EmployeeSkill).clear();
+            await AppDataSource.getRepository(EmployeeProject).clear();
+            await AppDataSource.getRepository(EmployeeDepartment).clear();
+            await AppDataSource.getRepository(Location).clear();
+            await AppDataSource.getRepository(Skill).clear();
+            await AppDataSource.getRepository(Project).clear();
+            await AppDataSource.getRepository(Department).clear();
+            await AppDataSource.getRepository(Employee).clear();
+
+            console.log('Tables cleared!');
         })
         .catch((err) => {
             console.error('Error during Data Source initialization', err);
