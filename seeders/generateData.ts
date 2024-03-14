@@ -15,7 +15,7 @@ import SearchService from '../src/services/SearchService';
 
 dotenv.config();
 
-const numberOfEmployees = 450;
+const numberOfEmployees = 20;
 const numberOfDepartments = 8;
 const numberOfProjects = 5;
 const numberOfSkills = 30;
@@ -130,7 +130,7 @@ async function generateData() {
     for (let i = 0; i < numberOfLocations; i++) {
         const location = new Location();
         location.address = faker.location.streetAddress();
-        location.city = faker.location.city();
+        location.city = locationNames[i][0];
         location.state = faker.location.state();
         location.country = locationNames[i][1]
         location.name = `${locationNames[i][0]}, ${locationNames[i][1]}`
@@ -222,7 +222,7 @@ async function generateData() {
         'Nuxt.js',
         'Svelte',
     ]
-    
+
     // Generate skills
     const skills: Skill[] = [];
     for (let i = 0; i < numberOfSkills; i++) {

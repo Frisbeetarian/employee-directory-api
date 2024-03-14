@@ -13,8 +13,8 @@ export class EmployeeProject {
     @ManyToOne(() => Project, project => project.employeeProjects)
     project!: Project;
 
-    @Column()
-    role!: string;
+    @Column({ nullable: true })
+    role?: string;
 
     @CreateDateColumn()
     createdAt!: Date;

@@ -14,8 +14,8 @@ export class EmployeeDepartment {
     @ManyToOne(() => Department, department => department.employeeDepartments)
     department!: Department;
 
-    @Column()
-    role!: string;
+    @Column({ nullable: true })
+    role?: string;
 
     @UpdateDateColumn()
     updatedAt!: Date

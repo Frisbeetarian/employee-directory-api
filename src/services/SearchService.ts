@@ -127,6 +127,13 @@ class SearchService {
         }
     }
 
+    async removeEmployeeFromIndex(uuid: string) {
+        await this.client.delete({
+            index: 'employees',
+            id: uuid,
+        });
+    }
+
     async searchEmployees(query: string) {
         try {
             const response = await this.client.search({

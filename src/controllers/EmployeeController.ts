@@ -46,6 +46,7 @@ class EmployeeController {
             const newEmployee = await this.employeeService.createEmployee(employee);
             res.status(201).json(newEmployee);
         } catch (error) {
+            console.log('error:', error.message)
             res.status(500).json({ message: error.message });
         }
     }

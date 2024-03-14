@@ -38,7 +38,6 @@ class SkillService {
 
     public async getEmployeesBySkillUuid(uuid: string, page: number, limit: number) {
         try {
-
             const skip = (page - 1) * limit;
 
             const [
@@ -52,7 +51,6 @@ class SkillService {
             });
 
             const employeeUuids = employeeSkills.map(el => el.employee.uuid);
-            console.log('employeeUuids:', employeeUuids)
 
             if (employeeUuids.length > 0) {
                 const employees = await this.employeeRepository.find({
@@ -64,7 +62,7 @@ class SkillService {
                         'employeeLocations.location'
                     ],
                 });
-                console.log('employees:', employees)
+
                 const employeesToSend = employees.map(
                     employee => ({
                         uuid: employee.uuid,
@@ -84,6 +82,10 @@ class SkillService {
                         locations: employee.employeeLocations?.map(employeeLocation => ({
                             uuid: employeeLocation.uuid,
                             name: employeeLocation.location.name
+                        })),
+                        projects: employee.employeeProjects?.map(employeeProject => ({
+                            uuid: employeeProject.uuid,
+                            name: employeeProject.project.name
                         })),
                         skills: employee.employeeSkills?.map(employeeSkill => ({
                             uuid: employeeSkill.uuid,
