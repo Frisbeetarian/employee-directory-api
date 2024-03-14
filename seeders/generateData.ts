@@ -15,7 +15,7 @@ import SearchService from '../src/services/SearchService';
 
 dotenv.config();
 
-const numberOfEmployees = 20;
+const numberOfEmployees = 450;
 const numberOfDepartments = 8;
 const numberOfProjects = 5;
 const numberOfSkills = 30;
@@ -25,7 +25,8 @@ async function generateData() {
     const AppDataSource = new DataSource({
         type: 'postgres',
         host: 'localhost',
-        port: 5433,
+        // @ts-ignore
+        port: parseInt(process.env.POSTGRESQL_PORT),
         username: process.env.POSTGRESQL_USERNAME,
         password: process.env.POSTGRESQL_PASSWORD,
         database: process.env.POSTGRESQL_DATABASE,
@@ -49,16 +50,16 @@ async function generateData() {
             console.log('Data Source has been initialized!');
 
             // Clear the tables
-            await AppDataSource.getRepository(EmployeeLocation).clear();
-            await AppDataSource.getRepository(EmployeeSkill).clear();
-            await AppDataSource.getRepository(EmployeeProject).clear();
-            await AppDataSource.getRepository(EmployeeDepartment).clear();
-            await AppDataSource.getRepository(Location).clear();
-            await AppDataSource.getRepository(Skill).clear();
-            await AppDataSource.getRepository(Project).clear();
-            await AppDataSource.getRepository(Department).clear();
-            await AppDataSource.getRepository(Employee).clear();
+            await AppDataSource.getRepository(EmployeeLocation).delete({});
+            await AppDataSource.getRepository(EmployeeSkill).delete({});
+            await AppDataSource.getRepository(EmployeeProject).delete({});
+            await AppDataSource.getRepository(EmployeeDepartment).delete({});
 
+            await AppDataSource.getRepository(Employee).delete({});
+            await AppDataSource.getRepository(Location).delete({});
+            await AppDataSource.getRepository(Skill).delete({});
+            await AppDataSource.getRepository(Project).delete({});
+            await AppDataSource.getRepository(Department).delete({});
             console.log('Tables cleared!');
         })
         .catch((err) => {
