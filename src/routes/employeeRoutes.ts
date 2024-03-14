@@ -19,11 +19,5 @@ export const employeeRouter = (controller: EmployeeController) => {
     // DELETE /employees/:uuid - Delete an employee
     router.delete('/:uuid', controller.deleteEmployee.bind(controller))
 
-    // GET /employees/search - Search employees by criteria
-    router.get('/search', controller.searchEmployees.bind(controller))
-
-    // GET /employees/department/:departmentUuid - Get employees by department UUID
-    // router.get('/department/:departmentUuid', EmployeeController.getEmployeesByDepartmentUuid);
-
     return router;
 };

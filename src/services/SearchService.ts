@@ -153,9 +153,6 @@ class SearchService {
             return [];
         }
     }
-
-    // async filterEmployeesByDepartment(department: string) {
-    // }
 }
 
 export default SearchService

@@ -1,4 +1,4 @@
-import { getConnection, In, Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 
 import { Employee } from '../entities/Employee';
 import { EmployeeDepartment } from '../entities/EmployeeDepartment';
@@ -14,34 +14,10 @@ import SearchService from './SearchService';
 
 class EmployeeService {
     private employeeRepository: Repository<Employee>;
-    private departmentRepository: Repository<Department>;
-    private locationRepository: Repository<Location>;
-    private projectRepository: Repository<Project>;
-    private skillRepository: Repository<Skill>;
-    private employeeDepartmentRepository: Repository<EmployeeDepartment>;
-    private employeeProjectRepository: Repository<EmployeeProject>;
-    private employeeSkillRepository: Repository<EmployeeSkill>;
-    private employeeLocationRepository: Repository<EmployeeLocation>;
 
     constructor(employeeRepository: Repository<Employee>,
-                departmentRepository: Repository<Department>,
-                locationRepository: Repository<Location>,
-                projectRepository: Repository<Project>,
-                skillRepository: Repository<Skill>,
-                employeeDepartmentRepository: Repository<EmployeeDepartment>,
-                employeeProjectRepository: Repository<EmployeeProject>,
-                employeeSkillRepository: Repository<EmployeeSkill>,
-                employeeLocationRepository: Repository<EmployeeLocation>,
     ) {
         this.employeeRepository = employeeRepository;
-        this.departmentRepository = departmentRepository;
-        this.locationRepository = locationRepository;
-        this.projectRepository = projectRepository;
-        this.skillRepository = skillRepository;
-        this.employeeDepartmentRepository = employeeDepartmentRepository;
-        this.employeeProjectRepository = employeeProjectRepository;
-        this.employeeSkillRepository = employeeSkillRepository;
-        this.employeeLocationRepository = employeeLocationRepository;
     }
 
     public async getEmployees(page: number, limit: number): Promise<{ employees: any[], totalCount: number }> {
@@ -99,11 +75,12 @@ class EmployeeService {
         }
     }
 
-    public async getEmployeeByUuid(uuid: number): Promise<Employee | null> {
+    public async getEmployeeByUuid(uuid: string): Promise<Employee | null> {
+        // @ts-ignore
         return await this.employeeRepository.findOne(uuid);
     }
 
-    public async createEmployee(employee: Employee): Promise<Employee> {
+    public async createEmployee(employee: any) {
         const queryRunner = this.employeeRepository.manager.connection.createQueryRunner();
 
         await queryRunner.connect();
@@ -188,37 +165,43 @@ class EmployeeService {
             });
 
             const searchService = new SearchService();
+            // @ts-ignore
             await searchService.indexEmployees([employeeToSend]);
 
-            return {
-                uuid: employeeToSend?.uuid,
-                name: employeeToSend?.name,
-                email: employeeToSend?.email,
-                phoneNumber: employeeToSend?.phoneNumber,
-                hireDate: employeeToSend?.hireDate,
-                jobTitle: employeeToSend?.jobTitle,
-                picture: employeeToSend?.picture,
-                biography: employeeToSend?.biography,
-                updatedAt: employeeToSend?.updatedAt,
-                createdAt: employeeToSend?.createdAt,
-                departments: employeeToSend?.employeeDepartments?.map(employeeDepartment => ({
-                    uuid: employeeDepartment.uuid,
-                    name: employeeDepartment.department.name
-                })),
-                locations: employeeToSend?.employeeLocations?.map(employeeLocation => ({
-                    uuid: employeeLocation.uuid,
-                    name: employeeLocation.location.name
-                })),
-                projects: employeeToSend?.employeeProjects?.map(employeeProject => ({
-                    uuid: employeeProject.uuid,
-                    name: employeeProject.project.name
-                })),
-                skills: employeeToSend?.employeeSkills?.map(employeeSkill => ({
-                    uuid: employeeSkill.uuid,
-                    name: employeeSkill.skill.name
-                }))
-            }
+            if (employeeToSend) {
 
+                return {
+                    uuid: employeeToSend.uuid,
+                    name: employeeToSend.name,
+                    email: employeeToSend.email,
+                    phoneNumber: employeeToSend.phoneNumber,
+                    hireDate: employeeToSend?.hireDate,
+                    jobTitle: employeeToSend.jobTitle,
+                    picture: employeeToSend?.picture,
+                    biography: employeeToSend?.biography,
+                    updatedAt: employeeToSend?.updatedAt,
+                    createdAt: employeeToSend?.createdAt,
+                    // @ts-ignore
+                    departments: employeeToSend?.employeeDepartments?.map(employeeDepartment => ({
+                        uuid: employeeDepartment.uuid,
+                        name: employeeDepartment.department.name
+                    })),
+                    locations: employeeToSend?.employeeLocations?.map(employeeLocation => ({
+                        uuid: employeeLocation.uuid,
+                        name: employeeLocation.location.name
+                    })),
+                    projects: employeeToSend?.employeeProjects?.map(employeeProject => ({
+                        uuid: employeeProject.uuid,
+                        name: employeeProject.project.name
+                    })),
+                    skills: employeeToSend?.employeeSkills?.map(employeeSkill => ({
+                        uuid: employeeSkill.uuid,
+                        name: employeeSkill.skill.name
+                    }))
+                }
+            } else {
+                return null;
+            }
         } catch (error) {
             await queryRunner.rollbackTransaction();
             throw error;
@@ -227,8 +210,9 @@ class EmployeeService {
         }
     }
 
-    public async updateEmployee(uuid: number, employee: Partial<Employee>): Promise<Employee | null> {
+    public async updateEmployee(uuid: string, employee: Partial<Employee>): Promise<Employee | null> {
         await this.employeeRepository.update(uuid, employee);
+        // @ts-ignore
         return await this.employeeRepository.findOne(uuid);
     }
 
@@ -254,10 +238,6 @@ class EmployeeService {
             const searchService = new SearchService();
             await searchService.removeEmployeeFromIndex(uuid);
         }
-    }
-
-    public async searchEmployees(criteria: Partial<Employee>): Promise<Employee[]> {
-        return await this.employeeRepository.find(criteria);
     }
 }
 

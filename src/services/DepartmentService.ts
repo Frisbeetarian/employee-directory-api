@@ -22,6 +22,7 @@ class DepartmentService {
     }
 
     public async getDepartmentByUuid(uuid: string): Promise<Department | null> {
+        // @ts-ignore
         return await this.departmentRepository.findOne(uuid);
     }
 
@@ -31,6 +32,7 @@ class DepartmentService {
 
     public async updateDepartment(uuid: string, department: Partial<Department>): Promise<Department | null> {
         await this.departmentRepository.update(uuid, department);
+        // @ts-ignore
         return await this.departmentRepository.findOne(uuid);
     }
 
@@ -98,10 +100,12 @@ class DepartmentService {
                 );
 
                 return { employees: employeesToSend, totalCount };
+            } else {
+                return { employees: [], totalCount: 0 };
             }
         } catch (error) {
             console.log(error);
-            return [];
+            throw new Error('Error getting employees by department uuid');
         }
     }
 }

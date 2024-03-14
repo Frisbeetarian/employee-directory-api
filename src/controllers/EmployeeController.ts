@@ -1,3 +1,5 @@
+import { Request, Response } from 'express';
+
 import EmployeeService from '../services/EmployeeService';
 
 class EmployeeController {
@@ -25,7 +27,9 @@ class EmployeeController {
                 totalCount,
             });
         } catch (error) {
+            // @ts-ignore
             console.log('Get employees error:', error.message)
+            // @ts-ignore
             res.status(500).json({ message: error.message });
         }
     }
@@ -36,6 +40,7 @@ class EmployeeController {
             const employee = await this.employeeService.getEmployeeByUuid(uuid);
             res.status(200).json(employee);
         } catch (error) {
+            // @ts-ignore
             res.status(500).json({ message: error.message });
         }
     }
@@ -46,7 +51,9 @@ class EmployeeController {
             const newEmployee = await this.employeeService.createEmployee(employee);
             res.status(201).json(newEmployee);
         } catch (error) {
+            // @ts-ignore
             console.log('error:', error.message)
+            // @ts-ignore
             res.status(500).json({ message: error.message });
         }
     }
@@ -58,6 +65,7 @@ class EmployeeController {
             const updatedEmployee = await this.employeeService.updateEmployee(uuid, employee);
             res.status(200).json(updatedEmployee);
         } catch (error) {
+            // @ts-ignore
             res.status(500).json({ message: error.message });
         }
     }
@@ -68,19 +76,11 @@ class EmployeeController {
             await this.employeeService.deleteEmployee(uuid);
             res.status(204).end();
         } catch (error) {
+            // @ts-ignore
             res.status(500).json({ message: error.message });
         }
     }
 
-    async searchEmployees(req: Request, res: Response) {
-        try {
-            const criteria = req.query;
-            const employees = await this.employeeService.searchEmployees(criteria);
-            res.status(200).json(employees);
-        } catch (error) {
-            res.status(500).json({ message: error.message });
-        }
-    }
 }
 
 export default EmployeeController;
