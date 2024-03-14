@@ -20,6 +20,7 @@ class SkillService {
     }
 
     public async getSkillByUuid(uuid: string): Promise<Skill | null> {
+        // @ts-ignore
         return await this.skillRepository.findOne(uuid);
     }
 
@@ -29,6 +30,7 @@ class SkillService {
 
     public async updateSkill(uuid: string, skill: Partial<Skill>): Promise<Skill | null> {
         await this.skillRepository.update(uuid, skill);
+        // @ts-ignore
         return await this.skillRepository.findOne(uuid);
     }
 
