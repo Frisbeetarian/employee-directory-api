@@ -2,6 +2,7 @@ import dotenv from 'dotenv';
 import express from 'express';
 import { DataSource } from 'typeorm';
 import helmet from 'helmet';
+// @ts-ignore
 import cors from 'cors'
 
 import { Employee } from './entities/Employee';
@@ -86,7 +87,7 @@ AppDataSource.initialize()
         const skillRepository = AppDataSource.getRepository(Skill);
         const locationRepository = AppDataSource.getRepository(Location);
 
-        const employeeService = new EmployeeService(employeeRepository, departmentRepository, locationRepository, projectRepository, skillRepository, employeeDepartmentRepository, employeeProjectRepository, employeeSkillRepository, employeeLocationRepository);
+        const employeeService = new EmployeeService(employeeRepository);
         const employeeController = new EmployeeController(employeeService);
         app.use('/api/employees', employeeRouter(employeeController))
 
@@ -110,7 +111,7 @@ AppDataSource.initialize()
         const searchController = new SearchController(searchService);
         app.use('/api/search', searchRouter(searchController));
 
-        app.use((err: Error, _: express.Request, res: express.Response, __: express.NextFunction) => {
+        app.use((err: Error, _: express.Request, res: express.Response) => {
             console.error(err.stack);
             res.status(500).json({ error: 'Internal Server Error' });
         });

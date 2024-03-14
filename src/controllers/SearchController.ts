@@ -10,26 +10,15 @@ class SearchController {
 
     async searchEmployees(req: Request, res: Response) {
         try {
-            const { query } = req.query;
-
+            // @ts-ignore
             const employees = await this.searchService.searchEmployees(req.query.query);
-
-            console.log(employees);
             res.status(200).json(employees);
         } catch (error) {
+            // @ts-ignore
             res.status(500).json({ message: error.message });
         }
     }
 
-    async filterEmployeesByDepartment(req: Request, res: Response) {
-        try {
-            const { department } = req.query;
-            const employees = await this.searchService.filterEmployeesByDepartment(department);
-            res.status(200).json(employees);
-        } catch (error) {
-            res.status(500).json({ message: error.message });
-        }
-    }
 }
 
 export default SearchController

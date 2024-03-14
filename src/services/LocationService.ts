@@ -2,7 +2,6 @@ import { In, Repository } from 'typeorm';
 import { Location } from '../entities/Location';
 import { Employee } from '../entities/Employee';
 import { EmployeeLocation } from '../entities/EmployeeLocation';
-import { EmployeeDepartment } from '../entities/EmployeeDepartment';
 
 class LocationService {
     private locationRepository: Repository<Location>;
@@ -32,6 +31,7 @@ class LocationService {
 
     public async updateLocation(uuid: string, location: Partial<Location>): Promise<Location | null> {
         await this.locationRepository.update(uuid, location);
+        // @ts-ignore
         return await this.locationRepository.findOne(uuid);
     }
 
@@ -40,6 +40,7 @@ class LocationService {
     }
 
     public async getLocationByUuid(uuid: string): Promise<Location | null> {
+        // @ts-ignore
         return await this.locationRepository.findOne(uuid);
     }
 
@@ -103,11 +104,12 @@ class LocationService {
                 );
 
                 return { employees: employeesToSend, totalCount };
+            } else {
+                return { employees: [], totalCount: 0 };
             }
         } catch (error) {
             console.log(error);
-            return [];
-
+            throw new Error('Error getting employees by location');
         }
     }
 }
