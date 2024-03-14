@@ -1,4 +1,4 @@
-import { getConnection, In, Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 
 import { Employee } from '../entities/Employee';
 import { EmployeeDepartment } from '../entities/EmployeeDepartment';
@@ -14,34 +14,10 @@ import SearchService from './SearchService';
 
 class EmployeeService {
     private employeeRepository: Repository<Employee>;
-    private departmentRepository: Repository<Department>;
-    private locationRepository: Repository<Location>;
-    private projectRepository: Repository<Project>;
-    private skillRepository: Repository<Skill>;
-    private employeeDepartmentRepository: Repository<EmployeeDepartment>;
-    private employeeProjectRepository: Repository<EmployeeProject>;
-    private employeeSkillRepository: Repository<EmployeeSkill>;
-    private employeeLocationRepository: Repository<EmployeeLocation>;
 
     constructor(employeeRepository: Repository<Employee>,
-                departmentRepository: Repository<Department>,
-                locationRepository: Repository<Location>,
-                projectRepository: Repository<Project>,
-                skillRepository: Repository<Skill>,
-                employeeDepartmentRepository: Repository<EmployeeDepartment>,
-                employeeProjectRepository: Repository<EmployeeProject>,
-                employeeSkillRepository: Repository<EmployeeSkill>,
-                employeeLocationRepository: Repository<EmployeeLocation>,
     ) {
         this.employeeRepository = employeeRepository;
-        this.departmentRepository = departmentRepository;
-        this.locationRepository = locationRepository;
-        this.projectRepository = projectRepository;
-        this.skillRepository = skillRepository;
-        this.employeeDepartmentRepository = employeeDepartmentRepository;
-        this.employeeProjectRepository = employeeProjectRepository;
-        this.employeeSkillRepository = employeeSkillRepository;
-        this.employeeLocationRepository = employeeLocationRepository;
     }
 
     public async getEmployees(page: number, limit: number): Promise<{ employees: any[], totalCount: number }> {

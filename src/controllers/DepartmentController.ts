@@ -1,3 +1,5 @@
+import { Request, Response } from 'express';
+
 import DepartmentService from '../services/DepartmentService';
 
 class DepartmentController {
@@ -7,11 +9,12 @@ class DepartmentController {
         this.departmentService = departmentService;
     }
 
-    async getDepartments(req: Request, res: Response) {
+    async getDepartments(_: Request, res: Response) {
         try {
             const departments = await this.departmentService.getDepartments();
             res.status(200).json(departments);
         } catch (error) {
+            // @ts-ignore
             res.status(500).json({ message: error.message });
         }
     }
@@ -31,6 +34,7 @@ class DepartmentController {
             const department = await this.departmentService.createDepartment(req.body);
             res.status(201).json(department);
         } catch (error) {
+            // @ts-ignore
             res.status(500).json({ message: error.message });
         }
     }
@@ -74,6 +78,7 @@ class DepartmentController {
                 totalCount,
             });
         } catch (error) {
+            // @ts-ignore
             res.status(500).json({ message: error.message });
 
         }

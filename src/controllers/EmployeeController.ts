@@ -1,3 +1,5 @@
+import { Request, Response } from 'express';
+
 import EmployeeService from '../services/EmployeeService';
 
 class EmployeeController {

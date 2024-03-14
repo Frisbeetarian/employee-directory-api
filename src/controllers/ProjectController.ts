@@ -1,3 +1,7 @@
+import { Request, Response } from 'express';
+
+import ProjectService from '../services/ProjectService';
+
 class ProjectController {
     private projectService: ProjectService;
 
@@ -5,7 +9,7 @@ class ProjectController {
         this.projectService = projectService;
     }
 
-    async getProjects(req: Request, res: Response) {
+    async getProjects(_: Request, res: Response) {
         try {
             const projects = await this.projectService.getProjects();
             res.status(200).json(projects);

@@ -1,3 +1,5 @@
+import { Request, Response } from 'express';
+
 import LocationService from '../services/LocationService';
 
 class LocationController {

@@ -1,3 +1,5 @@
+import { Request, Response } from 'express';
+
 import SkillService from '../services/SkillService';
 
 class SkillController {
