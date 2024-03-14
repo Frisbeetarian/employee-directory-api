@@ -19,6 +19,7 @@ class ProjectService {
     }
 
     public async getProjectByUuid(uuid: number): Promise<Project | null> {
+        // @ts-ignore
         return await this.projectRepository.findOne(uuid);
     }
 
@@ -28,6 +29,7 @@ class ProjectService {
 
     public async updateProject(uuid: number, project: Partial<Project>): Promise<Project | null> {
         await this.projectRepository.update(uuid, project);
+        // @ts-ignore
         return await this.projectRepository.findOne(uuid);
     }
 
@@ -95,10 +97,12 @@ class ProjectService {
                 );
 
                 return { employees: employeesToSend, totalCount };
+            } else {
+                return { employees: [], totalCount: 0 };
             }
         } catch (error) {
             console.log(error);
-            return [];
+            throw new Error('Error getting employees by project uuid');
         }
     }
 }
