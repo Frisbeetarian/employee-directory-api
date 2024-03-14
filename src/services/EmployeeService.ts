@@ -76,10 +76,11 @@ class EmployeeService {
     }
 
     public async getEmployeeByUuid(uuid: string): Promise<Employee | null> {
+        // @ts-ignore
         return await this.employeeRepository.findOne(uuid);
     }
 
-    public async createEmployee(employee: any): Promise<Employee> {
+    public async createEmployee(employee: any) {
         const queryRunner = this.employeeRepository.manager.connection.createQueryRunner();
 
         await queryRunner.connect();
@@ -164,37 +165,43 @@ class EmployeeService {
             });
 
             const searchService = new SearchService();
+            // @ts-ignore
             await searchService.indexEmployees([employeeToSend]);
 
-            return {
-                uuid: employeeToSend?.uuid,
-                name: employeeToSend?.name,
-                email: employeeToSend?.email,
-                phoneNumber: employeeToSend?.phoneNumber,
-                hireDate: employeeToSend?.hireDate,
-                jobTitle: employeeToSend?.jobTitle,
-                picture: employeeToSend?.picture,
-                biography: employeeToSend?.biography,
-                updatedAt: employeeToSend?.updatedAt,
-                createdAt: employeeToSend?.createdAt,
-                departments: employeeToSend?.employeeDepartments?.map(employeeDepartment => ({
-                    uuid: employeeDepartment.uuid,
-                    name: employeeDepartment.department.name
-                })),
-                locations: employeeToSend?.employeeLocations?.map(employeeLocation => ({
-                    uuid: employeeLocation.uuid,
-                    name: employeeLocation.location.name
-                })),
-                projects: employeeToSend?.employeeProjects?.map(employeeProject => ({
-                    uuid: employeeProject.uuid,
-                    name: employeeProject.project.name
-                })),
-                skills: employeeToSend?.employeeSkills?.map(employeeSkill => ({
-                    uuid: employeeSkill.uuid,
-                    name: employeeSkill.skill.name
-                }))
-            }
+            if (employeeToSend) {
 
+                return {
+                    uuid: employeeToSend.uuid,
+                    name: employeeToSend.name,
+                    email: employeeToSend.email,
+                    phoneNumber: employeeToSend.phoneNumber,
+                    hireDate: employeeToSend?.hireDate,
+                    jobTitle: employeeToSend.jobTitle,
+                    picture: employeeToSend?.picture,
+                    biography: employeeToSend?.biography,
+                    updatedAt: employeeToSend?.updatedAt,
+                    createdAt: employeeToSend?.createdAt,
+                    // @ts-ignore
+                    departments: employeeToSend?.employeeDepartments?.map(employeeDepartment => ({
+                        uuid: employeeDepartment.uuid,
+                        name: employeeDepartment.department.name
+                    })),
+                    locations: employeeToSend?.employeeLocations?.map(employeeLocation => ({
+                        uuid: employeeLocation.uuid,
+                        name: employeeLocation.location.name
+                    })),
+                    projects: employeeToSend?.employeeProjects?.map(employeeProject => ({
+                        uuid: employeeProject.uuid,
+                        name: employeeProject.project.name
+                    })),
+                    skills: employeeToSend?.employeeSkills?.map(employeeSkill => ({
+                        uuid: employeeSkill.uuid,
+                        name: employeeSkill.skill.name
+                    }))
+                }
+            } else {
+                return null;
+            }
         } catch (error) {
             await queryRunner.rollbackTransaction();
             throw error;
@@ -205,6 +212,7 @@ class EmployeeService {
 
     public async updateEmployee(uuid: string, employee: Partial<Employee>): Promise<Employee | null> {
         await this.employeeRepository.update(uuid, employee);
+        // @ts-ignore
         return await this.employeeRepository.findOne(uuid);
     }
 
