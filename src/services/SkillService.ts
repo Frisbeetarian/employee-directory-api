@@ -19,7 +19,7 @@ class SkillService {
         return await this.skillRepository.find();
     }
 
-    public async getSkillByUuid(uuid: number): Promise<Skill | null> {
+    public async getSkillByUuid(uuid: string): Promise<Skill | null> {
         return await this.skillRepository.findOne(uuid);
     }
 
@@ -27,12 +27,12 @@ class SkillService {
         return await this.skillRepository.save(skill);
     }
 
-    public async updateSkill(uuid: number, skill: Partial<Skill>): Promise<Skill | null> {
+    public async updateSkill(uuid: string, skill: Partial<Skill>): Promise<Skill | null> {
         await this.skillRepository.update(uuid, skill);
         return await this.skillRepository.findOne(uuid);
     }
 
-    public async deleteSkill(uuid: number): Promise<void> {
+    public async deleteSkill(uuid: string): Promise<void> {
         await this.skillRepository.delete(uuid);
     }
 
@@ -95,11 +95,12 @@ class SkillService {
                 );
 
                 return { employees: employeesToSend, totalCount };
+            } else {
+                return { employees: [], totalCount: 0 };
             }
         } catch (error) {
             console.log(error);
-            return [];
-
+            throw new Error('Error getting employees by skill');
         }
     }
 }

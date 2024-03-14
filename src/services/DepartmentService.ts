@@ -22,6 +22,7 @@ class DepartmentService {
     }
 
     public async getDepartmentByUuid(uuid: string): Promise<Department | null> {
+        // @ts-ignore
         return await this.departmentRepository.findOne(uuid);
     }
 

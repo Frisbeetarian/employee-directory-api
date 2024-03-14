@@ -10,7 +10,7 @@ class LocationController {
         this.locationService = locationService;
     }
 
-    async getLocations(req: Request, res: Response) {
+    async getLocations(_: Request, res: Response) {
         try {
             const locations = await this.locationService.getLocations();
             res.status(200).json(locations);

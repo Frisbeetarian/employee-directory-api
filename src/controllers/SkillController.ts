@@ -9,7 +9,7 @@ class SkillController {
         this.skillService = skillService;
     }
 
-    async getSkills(req: Request, res: Response) {
+    async getSkills(_: Request, res: Response) {
         try {
             const skills = await this.skillService.getSkills();
             res.status(200).json(skills);

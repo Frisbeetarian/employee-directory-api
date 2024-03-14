@@ -75,11 +75,11 @@ class EmployeeService {
         }
     }
 
-    public async getEmployeeByUuid(uuid: number): Promise<Employee | null> {
+    public async getEmployeeByUuid(uuid: string): Promise<Employee | null> {
         return await this.employeeRepository.findOne(uuid);
     }
 
-    public async createEmployee(employee: Employee): Promise<Employee> {
+    public async createEmployee(employee: any): Promise<Employee> {
         const queryRunner = this.employeeRepository.manager.connection.createQueryRunner();
 
         await queryRunner.connect();
@@ -203,7 +203,7 @@ class EmployeeService {
         }
     }
 
-    public async updateEmployee(uuid: number, employee: Partial<Employee>): Promise<Employee | null> {
+    public async updateEmployee(uuid: string, employee: Partial<Employee>): Promise<Employee | null> {
         await this.employeeRepository.update(uuid, employee);
         return await this.employeeRepository.findOne(uuid);
     }
@@ -230,10 +230,6 @@ class EmployeeService {
             const searchService = new SearchService();
             await searchService.removeEmployeeFromIndex(uuid);
         }
-    }
-
-    public async searchEmployees(criteria: Partial<Employee>): Promise<Employee[]> {
-        return await this.employeeRepository.find(criteria);
     }
 }
 
