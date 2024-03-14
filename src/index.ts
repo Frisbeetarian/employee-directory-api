@@ -38,6 +38,8 @@ dotenv.config();
 const app = express();
 const port = process.env.PORT || 4020;
 
+app.set('trust proxy', 1)
+
 // Middleware
 app.use(express.json());
 app.use(helmet());
